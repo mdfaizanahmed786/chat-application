@@ -7,8 +7,8 @@ type Props = {};
 const ManageChatMembers = (props: Props) => {
   const [search, setSearch] = React.useState("");
   return (
-    <div className="flex-1 py-7 px-2">
-      <div className="flex items-center py-2 rounded-md bg-[#3C393F]">
+    <div className="flex-1 py-7 px-3">
+      <div className="flex items-center py-3 rounded-md bg-[#3C393F]">
         <div className="px-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"

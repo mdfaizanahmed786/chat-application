@@ -4,7 +4,7 @@ type Props = {};
 
 const AddChannel = (props: Props) => {
   return (
-    <div className="flex justify-between items-center w-full shadow-lg h-[56px] ">
+    <div className="flex justify-between items-center w-full shadow-lg h-[56px] px-2">
       <div>
         <h1 className="text-lg font-bold">Channels</h1>
       </div>
