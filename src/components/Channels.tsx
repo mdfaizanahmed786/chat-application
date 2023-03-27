@@ -12,11 +12,11 @@ const Channels = (props: Props) => {
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"
         >
           <div className="flex items-center">
-          <div className="avatar placeholder">
-        <div className="bg-neutral-focus text-neutral-content rounded-full w-12">
-          <span>RA</span>
-        </div>
-      </div>
+          <div className="avatar">
+  <div className="w-9 rounded-full">
+    <img src="https://image-upload-nidx.onrender.com/uploads/angry.jpg" />
+  </div>
+</div>
             <div className="ml-3">
               <h1 className="text-white font-semibold">Channel Name</h1>
               <p className="text-gray-400 text-sm">Last message</p>
