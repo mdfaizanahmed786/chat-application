@@ -7,7 +7,7 @@ type Props = {}
 
 const ChatContainer = (props: Props) => {
   return (
-    <div className=' overflow-auto flex flex-1 md:px-20 py-6 flex-col  text-white bg-[#252329]'>
+    <div className=' overflow-auto flex flex-1  py-6 flex-col  text-white bg-[#252329]'>
      
         <MessagesContainer/>
         <InputContainer/>

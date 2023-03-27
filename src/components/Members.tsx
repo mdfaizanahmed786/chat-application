@@ -5,7 +5,7 @@ type Props = {}
 const Members = (props: Props) => {
   return (
     <div className='flex-1'>
-      Members
+     members
     </div>
   )
 }
