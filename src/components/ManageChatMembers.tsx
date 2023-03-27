@@ -1,6 +1,5 @@
 import React from "react";
-import Members from "./Members";
-import AboutMe from "./AboutMe";
+import Channels from "./Channels";
 
 type Props = {};
 
@@ -34,7 +33,7 @@ const ManageChatMembers = (props: Props) => {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      <Members />
+      <Channels />
     </div>
   );
 };

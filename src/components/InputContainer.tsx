@@ -7,7 +7,7 @@ const InputContainer = (props: Props) => {
   return (
     <div>
       <form>
-        <div className="flex  py-2 bg-[#3C393F] shadow-md rounded-md">
+        <div className="flex  py-3 bg-[#3C393F] shadow-md rounded-md">
           <input
             type="text"
             name="chat"
