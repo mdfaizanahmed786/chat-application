@@ -4,7 +4,7 @@ type Props = {}
 
 const AboutMe = (props: Props) => {
   return (
-    <div>AboutMe</div>
+    <div className='md:py-7'>AboutMe</div>
   )
 }
 
