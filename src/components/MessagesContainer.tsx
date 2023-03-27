@@ -1,10 +1,13 @@
 import React from 'react'
+import Messages from './Messages'
 
 type Props = {}
 
 const MessagesContainer = (props: Props) => {
   return (
-    <div>MessagesContainer</div>
+    <div className='flex-1'>
+      <Messages/>
+    </div>
   )
 }
 

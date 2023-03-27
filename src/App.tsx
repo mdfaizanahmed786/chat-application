@@ -1,13 +1,16 @@
+import ChatContainer from "./components/ChatContainer";
+import Sidebar from "./components/Sidebar";
 
 function App() {
-
   return (
-    <div className="App">
-      <p className="text-red-500">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div className="flex w-full">
+      <Sidebar />
+
+      <ChatContainer />
+
+      
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

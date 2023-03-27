@@ -4,7 +4,9 @@ type Props = {}
 
 const Members = (props: Props) => {
   return (
-    <div>Members</div>
+    <div className='flex-1'>
+      Members
+    </div>
   )
 }
 
