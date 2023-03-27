@@ -4,7 +4,9 @@ type Props = {}
 
 const Navbar = (props: Props) => {
   return (
-    <div className='h-[48px] w-full bg-[#252329] drop-shadow-lg'>Navbar</div>
+    <div className='h-[56px] w-full bg-[#252329] drop-shadow-lg px-4 flex items-center'>
+  <p className='font-bold text-lg text-white'>HyperText Assassins</p>
+    </div>
   )
 }
 
