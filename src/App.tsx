@@ -1,4 +1,4 @@
-import ChatContainer from "./components/ChatContainer";
+import Chat from "./components/Chat";
 import Sidebar from "./components/Sidebar";
 
 function App() {
@@ -6,9 +6,9 @@ function App() {
     <div className="flex w-full">
       <Sidebar />
 
-      <ChatContainer />
+      <Chat />
 
-      
+
     </div>
   );
 }

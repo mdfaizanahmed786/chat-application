@@ -7,8 +7,8 @@ type Props = {}
 
 const ChatContainer = (props: Props) => {
   return (
-    <div className='flex-[0.85] min-h-screen overflow-auto flex flex-col  text-white bg-[#252329]'>
-        <Navbar/>
+    <div className=' overflow-auto flex flex-1 px-7 py-6 flex-col  text-white bg-[#252329]'>
+     
         <MessagesContainer/>
         <InputContainer/>
 
