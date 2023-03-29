@@ -5,7 +5,7 @@ type Props = {};
 const InputContainer = (props: Props) => {
   const [message, setMessage] = useState("");
   return (
-    <div className="mx-5 py-5 ">
+    <div className="px-10 py-5 bg-[#120F13] ">
       <form>
         <div className="flex  py-3 bg-[#3C393F] shadow-md rounded-md">
           <input

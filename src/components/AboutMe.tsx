@@ -4,7 +4,7 @@ type Props = {};
 
 const AboutMe = (props: Props) => {
   return (
-    <div className="md:py-1  flex justify-around items-center bg-[#0B090C] w-full">
+    <div className="md:py-1 z-50  flex justify-around items-center bg-[#0B090C] w-full">
       <div className="avatar placeholder">
         <div className="bg-neutral-focus text-neutral-content rounded-full w-12">
           <span>RA</span>
@@ -15,7 +15,7 @@ const AboutMe = (props: Props) => {
       </div>
      
 
-      <div className="dropdown dropdown-top z-50  cursor-pointer ">
+      <div className="dropdown dropdown-top dropdown-end ">
         <label tabIndex={0} className="m-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ const AboutMe = (props: Props) => {
         </label>
         <ul
           tabIndex={0}
-          className="dropdown-content menu  p-2 shadow bg-[#3C393F] rounded-md w-52"
+          className="dropdown-content menu   p-2 shadow bg-[#3C393F] rounded-md w-52"
         >
           <li>
             <a>Item 1</a>

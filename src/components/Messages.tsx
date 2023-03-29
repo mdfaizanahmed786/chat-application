@@ -3,10 +3,10 @@ import React from "react";
 type Props = {};
 
 const Messages = (props: Props) => {
-  const colorArray=["#828282", "#120F13"]
+  const colorArray=["#3C393F", "#120F13"]
   return (
     <div>
-      {Array.from({ length: 10 }).map((_, i) => (
+      {Array.from({ length: 20 }).map((_, i) => (
         <div key={i} className={`flex gap-4 w-full bg-[${colorArray[i%(colorArray.length)]}] px-24 py-10 justify-center   items-center `}>
           <div>
             <img

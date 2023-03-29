@@ -3,7 +3,7 @@ import Sidebar from "./components/Sidebar";
 
 function App() {
   return (
-    <div className="flex max-w-full">
+    <div className="flex max-w-full overflow-hidden">
       <Sidebar />
 
       <Chat />
