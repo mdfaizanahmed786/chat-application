@@ -19,7 +19,7 @@ const getChannels = async (req, res) => {
 
       return res.status(200).json(channel);
     } catch (err) {
-      return res.status(500).json({ message: err });
+      return res.status(500).json({ message: err.message });
     }
   }
 };

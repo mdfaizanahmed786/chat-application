@@ -23,7 +23,7 @@ const createChannel = async (req, res) => {
     const savedChannel = await channel.save();
     res.status(201).json({ success: true, channel: savedChannel });
   } catch (err) {
-    res.status(500).json({ message: err });
+    res.status(500).json({ message: err.message });
   }
 };
 
