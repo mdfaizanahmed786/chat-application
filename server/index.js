@@ -20,6 +20,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 //defining all routes
 app.use('/api/v1',require('./src/v1/routes/channelRoutes'));
+app.use('/api/v1',require('./src/v1/routes/userRoutes'));
 
 
 
