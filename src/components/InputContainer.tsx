@@ -21,7 +21,7 @@ const InputContainer = (props: Props) => {
             type="submit"
             className={` ${
               !message ? "text-gray-600" : "text-[#2D9CDB] hover:text-white"
-            } px-2 -rotate-45  transition  rounded-md py-1`}
+            } px-2 -rotate-45  transition  rounded-md py-1 disabled:cursor-not-allowed disabled:opacity-50`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

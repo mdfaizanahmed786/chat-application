@@ -4,18 +4,28 @@ const bodyParser=require('body-parser');
 const helmet=require('helmet');
 const morgan=require('morgan');
 const cors=require('cors');
-const PORT=8000 || process.env.PORT
+const PORT=8001 || process.env.PORT
 const app=express();
 const mongoose=require('mongoose');
+const Channel = require('./src/v1/models/Channel');
 
-// defining all middlewares
+// defining all middleware
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 app.use(morgan());
 app.use(cors());
-app.use(bodyParser.urlencoded({extended:false}));
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
+
+
 //defining all routes
-	
+app.use('/api/v1',require('./src/v1/routes/channelRoutes'));
+
+
+
+
+
+	// Connection to the database
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
