@@ -8,7 +8,7 @@ type Props = {};
 
 const Sidebar = (props: Props) => {
   return (
-    <div className="flex-[0.15] flex justify-between min-h-screen flex-col  items-center bg-[#120F13] text-white">
+    <div className="min-w-[22%] flex justify-between h-screen  flex-col shadow-xl items-center overflow-x-hidden bg-[#120F13] text-white">
       <AddChannel />
 
       <ManageChatMembers />

@@ -4,8 +4,8 @@ type Props = {};
 
 const Channels = (props: Props) => {
   return (
-    <div className="py-4 cursor-pointer overflow-auto ">
-      {Array.from({ length: 3 }).map((_, i) => (
+    <div className="py-4 cursor-pointer  ">
+      {Array.from({ length: 20 }).map((_, i) => (
         <div
           key={i}
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"

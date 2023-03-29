@@ -1,17 +1,19 @@
-import React from 'react'
-import Navbar from './Navbar'
-import ChatContainer from './ChatContainer'
+import React from "react";
+import Navbar from "./Navbar";
+import MessagesContainer from "./MessagesContainer";
+import InputContainer from "./InputContainer";
 
-type Props = {}
+type Props = {};
 
 const Chat = (props: Props) => {
   return (
-    <div className='flex-[0.85] flex flex-col  min-h-screen'>
-           <Navbar/>
-           <ChatContainer/>
+    <div className="min-w-[78%] flex flex-col h-screen ">
+      <Navbar />
 
+      <MessagesContainer />
+      <InputContainer />
     </div>
-  )
-}
+  );
+};
 
-export default Chat
+export default Chat;

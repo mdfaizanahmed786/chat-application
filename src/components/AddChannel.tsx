@@ -4,10 +4,10 @@ type Props = {};
 
 const AddChannel = (props: Props) => {
   return (
-    <div className="flex justify-between items-center w-full shadow-lg h-[56px] px-2">
+    <div className="flex justify-between items-center w-full shadow-lg sticky top-0 bg-[#120F13] z-10 h-[56px] px-2">
       <div>
         <h1 className="text-lg font-bold">Channels</h1>
-      </div>
+      </div> 
       <label htmlFor="my-modal-6">
         <svg
           xmlns="http://www.w3.org/2000/svg"

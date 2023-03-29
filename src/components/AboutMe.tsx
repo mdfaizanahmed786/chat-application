@@ -15,7 +15,7 @@ const AboutMe = (props: Props) => {
       </div>
      
 
-      <div className="dropdown dropdown-top  cursor-pointer ">
+      <div className="dropdown dropdown-top z-50  cursor-pointer ">
         <label tabIndex={0} className="m-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ const AboutMe = (props: Props) => {
         </label>
         <ul
           tabIndex={0}
-          className="dropdown-content menu p-2 shadow bg-[#3C393F] rounded-md w-52"
+          className="dropdown-content menu  p-2 shadow bg-[#3C393F] rounded-md w-52"
         >
           <li>
             <a>Item 1</a>

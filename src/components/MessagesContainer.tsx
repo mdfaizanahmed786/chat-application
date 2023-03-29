@@ -5,7 +5,7 @@ type Props = {}
 
 const MessagesContainer = (props: Props) => {
   return (
-    <div className='flex-1'>
+    <div className='flex-1 h-full overflow-y-auto  '>
       <Messages/>
     </div>
   )
