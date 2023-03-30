@@ -19,8 +19,9 @@ const sendMessage = async (req, res) => {
   try {
     const newMessage = new Message({
       message: req.body.message,
-      userId: req.body.userId,
+      userId: req.user._id,
       channelId: req.body.channelId,
+      
     });
 
     await newMessage.save();

@@ -18,6 +18,7 @@ const createChannel = async (req, res) => {
   const channel = new Channel({
     name: req.body.name,
     description: req.body.description,
+    createdBy: req.user._id,
   });
   try {
     const savedChannel = await channel.save();

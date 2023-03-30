@@ -1,9 +1,8 @@
-const express=require('express');
-const sendMessage = require('../controllers/messages/sendMessage');
-const router=express.Router()
+const express = require("express");
+const sendMessage = require("../controllers/messages/sendMessage");
+const authenticateUser = require("../middleware");
+const router = express.Router();
 
+router.post("/send", authenticateUser, sendMessage);
 
-router.post('/send', sendMessage);
-
-
-module.exports=router;
+module.exports = router;
