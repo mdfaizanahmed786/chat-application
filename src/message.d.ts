@@ -1,4 +1,4 @@
-type ArrayOfmessages = {
+interface ArrayOfmessages {
   _id: string;
   message: string;
   userId: {
@@ -11,3 +11,7 @@ type MessageContext = {
   messages: ArrayOfmessages[];
   setMessages:Dispatch<SetStateAction<{ message: string; }[]>>
 };
+
+interface PusherMessage extends ArrayOfmessages {
+allMessages: ArrayOfmessages[];
+}

@@ -26,12 +26,12 @@ const sendMessage = async (req, res) => {
 
     await newMessage.save();
 
-    pusher.trigger("chat", "trigger-chat", {
-      message: req.body.message,
-    });
     const allMessages=await Message.find({channelId:req.body.channelId}).populate('userId', 'name').populate('channelId', 'name')
+    pusher.trigger("chat", "trigger-chat", {
+      allMessages
+    });
    
-    return res.status(201).json({ success: true, allMessages });
+    return res.status(201).json({ success: true });
    
   } catch (err) {
     return res.status(500).json({ message: err.message });

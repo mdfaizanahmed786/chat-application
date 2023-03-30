@@ -13,8 +13,8 @@ const InputContainer = (props: Props) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    const { data } = await axios.post(
-      "http://localhost:8001/api/v1/send",
+    await axios.post(
+      `${import.meta.env.VITE_BACKEND}/api/v1/send`,
       {
         message,
       },
@@ -26,8 +26,8 @@ const InputContainer = (props: Props) => {
       }
     );
 
-    console.log(data)
-    messageContext?.setMessages?.(data?.allMessages, ...messageContext?.messages);
+   
+    
 
     setMessage("");
   };
@@ -38,7 +38,9 @@ const InputContainer = (props: Props) => {
     });
 
     const channel = pusher.subscribe("chat");
-    channel.bind("trigger-chat", function (data: string) {});
+    channel.bind("trigger-chat", function (data:PusherMessage) {
+      messageContext?.setMessages?.(data?.allMessages, ...messageContext?.messages);
+    });
 
     return () => {
       pusher.unsubscribe("chat");
