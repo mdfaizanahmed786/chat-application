@@ -21,7 +21,7 @@ const InputContainer = (props: Props) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(data);
+   
     setMessage("");
   };
 

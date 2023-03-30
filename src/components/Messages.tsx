@@ -3,13 +3,17 @@ import { MessagesContext } from "../context/messagesContext";
 
 type Props = {};
 
+type ArrayOfmessages = {
+  message: {message:string}
+};
+
 const Messages = (props: Props) => {
   const colorArray=["#3C393F", "#120F13"]
   const messageContext = useContext<MessageContext | null>(MessagesContext);
   console.log(messageContext?.messages);
   return (
     <div>
-      {messageContext?.messages?.map(({message}:ArrayOfmessages, i) => (
+      {messageContext?.messages?.map(({message}, i) => (
         <div key={i} className={`flex gap-4 w-full bg-[${colorArray[i%(colorArray.length)]}] px-24 py-10 justify-center   items-center `}>
           <div>
             <img
@@ -24,7 +28,8 @@ const Messages = (props: Props) => {
             </div>
             <div>
               <p>
-dlfjdljfldjf
+              {/* @ts-ignore */}
+{message?.message}
               </p>
             </div>
           </div>

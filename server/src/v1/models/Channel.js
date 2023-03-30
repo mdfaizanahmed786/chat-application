@@ -10,7 +10,8 @@ const ChannelSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    users: [{ type: mongoose.Schema.Types.UUID, ref: "User" }],
+    users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    
   },
 );
 
