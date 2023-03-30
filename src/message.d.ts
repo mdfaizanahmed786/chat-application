@@ -6,7 +6,7 @@ type ArrayOfmessages = {
     _id: string;
   };
   createdAt: string;
-}[];
+}
 type MessageContext = {
   messages: ArrayOfmessages[];
   setMessages:Dispatch<SetStateAction<{ message: string; }[]>>

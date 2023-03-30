@@ -5,11 +5,12 @@ const MessagesContext=createContext<MessageContext | null>(null);
 
 
 
+
 const MessagesProvider=({children}:{
     children:React.ReactNode
 })=>{
 
-    const [messages, setMessages]=useState([]);
+    const [messages, setMessages]=useState<ArrayOfmessages[]>([]);
     return (
         <MessagesContext.Provider value={{messages, setMessages}}>
            {children}
