@@ -1,4 +1,12 @@
-type ArrayOfmessages={message:string}
+type ArrayOfmessages = {
+  _id: string;
+  message: string;
+  userId: {
+    name: string;
+    _id: string;
+  };
+  createdAt: string;
+}[];
 type MessageContext = {
   messages: ArrayOfmessages[];
   setMessages:Dispatch<SetStateAction<{ message: string; }[]>>

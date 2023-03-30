@@ -11,9 +11,12 @@ const ChannelSchema = new mongoose.Schema(
       required: true,
     },
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, required: true,ref: "User",  },
     
   },
+  {
+    timestamps: true,
+  }
 );
 
 

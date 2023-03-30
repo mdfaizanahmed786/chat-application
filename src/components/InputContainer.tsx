@@ -7,40 +7,38 @@ type Props = {};
 
 const InputContainer = (props: Props) => {
   const messageContext = useContext<MessageContext | null>(MessagesContext);
-  console.log(messageContext?.messages)
-
+  console.log(messageContext?.messages);
 
   const [message, setMessage] = useState("");
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("hell")
-    const { data } = await axios.post("http://localhost:8001/api/v1/send", {
-      message,
-    }, {
-      headers: {
-        "Content-Type": "application/json",
+    
+    const { data } = await axios.post(
+      "http://localhost:8001/api/v1/send",
+      {
+        message,
       },
-    });
-   
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + import.meta.env.VITE_AUTHORIZATION,
+        },
+      }
+    );
+
+    console.log(data)
+    messageContext?.setMessages?.(data?.allMessages, ...messageContext?.messages);
+
     setMessage("");
   };
 
   useEffect(() => {
-    // Pusher.logToConsole = true;
-
-    let arrayOfMessages: ArrayOfmessages[]= [];
-
     const pusher = new Pusher(import.meta.env.VITE_PUSHER_API_KEY, {
       cluster: "mt1",
     });
 
     const channel = pusher.subscribe("chat");
-    channel.bind("trigger-chat", function (data: string) {
-
-      arrayOfMessages.push({message:data});
-      messageContext?.setMessages(arrayOfMessages);
-
-    });
+    channel.bind("trigger-chat", function (data: string) {});
 
     return () => {
       pusher.unsubscribe("chat");

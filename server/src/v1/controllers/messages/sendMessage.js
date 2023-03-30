@@ -29,7 +29,10 @@ const sendMessage = async (req, res) => {
     pusher.trigger("chat", "trigger-chat", {
       message: req.body.message,
     });
-    res.status(201).json({ success: true, newMessage });
+    const allMessages=await Message.find({channelId:req.body.channelId}).populate('userId', 'name').populate('channelId', 'name')
+   
+    return res.status(201).json({ success: true, allMessages });
+   
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

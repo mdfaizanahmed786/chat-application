@@ -3,33 +3,41 @@ import { MessagesContext } from "../context/messagesContext";
 
 type Props = {};
 
-type ArrayOfmessages = {
-  message: {message:string}
-};
+interface User {
+  name: string;
+}
+
+interface Response {
+  _id: string;
+  userId?: User;
+  createdAt: string;
+  message: string;
+}
 
 const Messages = (props: Props) => {
   const colorArray=["#3C393F", "#120F13"]
   const messageContext = useContext<MessageContext | null>(MessagesContext);
-  console.log(messageContext?.messages);
+  console.log(messageContext?.messages)
+ 
   return (
     <div>
-      {messageContext?.messages?.map(({message}, i) => (
-        <div key={i} className={`flex gap-4 w-full bg-[${colorArray[i%(colorArray.length)]}] px-24 py-10 justify-center   items-center `}>
+      {messageContext?.messages?.map((message: Response, i:number) => (
+        <div key={message._id} className={`flex gap-4 w-full bg-[${colorArray[i%(colorArray.length)]}] px-24 py-10 justify-center   items-center `}>
           <div>
             <img
-              src="https://image-upload-nidx.onrender.com/uploads/fifafinal.jpeg"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_C7SruCkVSu5AxowynH7TAApdKNH7TD1SLR8tBS5bpQ&usqp=CAU&ec=48665701"
               className="w-10 h-10 rounded-full object-cover"
             />
           </div>
           <div className="flex flex-col gap-2 justify-center flex-1 ">
             <div className="flex gap-2 items-center">
-              <p className="text-[#828282] font-semibold text-lg">Nouman Ahmed</p>
-              <p className="text-gray-400 text-sm">yesterday, 4:40PM</p>
+              <p className="text-[#828282] font-semibold text-lg">{message.userId?.name}</p>
+              <p className="text-gray-400 text-sm">{message.createdAt}</p>
             </div>
             <div>
               <p>
               {/* @ts-ignore */}
-{message?.message}
+{message.message}
               </p>
             </div>
           </div>
