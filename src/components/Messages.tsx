@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
+import { MessagesContext } from "../context/messagesContext";
 
 type Props = {};
 
 const Messages = (props: Props) => {
   const colorArray=["#3C393F", "#120F13"]
+  const messageContext = useContext<MessageContext | null>(MessagesContext);
+  console.log(messageContext?.messages);
   return (
     <div>
-      {Array.from({ length: 20 }).map((_, i) => (
+      {messageContext?.messages?.map(({message}:ArrayOfmessages, i) => (
         <div key={i} className={`flex gap-4 w-full bg-[${colorArray[i%(colorArray.length)]}] px-24 py-10 justify-center   items-center `}>
           <div>
             <img
@@ -21,8 +24,7 @@ const Messages = (props: Props) => {
             </div>
             <div>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio. Lorem ipsum dolor sit amet consectetur adipisicing elit. Id corporis nesciunt excepturi, sit suscipit labore quam. Iure voluptates voluptatem dolores.
-               
+dlfjdljfldjf
               </p>
             </div>
           </div>

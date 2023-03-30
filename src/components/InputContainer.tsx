@@ -1,12 +1,55 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import Pusher from "pusher-js";
+import axios from "axios";
+import { MessagesContext } from "../context/messagesContext";
 
 type Props = {};
 
 const InputContainer = (props: Props) => {
+  const messageContext = useContext<MessageContext | null>(MessagesContext);
+  console.log(messageContext?.messages)
+
+
   const [message, setMessage] = useState("");
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    alert("hell")
+    const { data } = await axios.post("http://localhost:8001/api/v1/send", {
+      message,
+    }, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(data);
+    setMessage("");
+  };
+
+  useEffect(() => {
+    // Pusher.logToConsole = true;
+
+    let arrayOfMessages: ArrayOfmessages[]= [];
+
+    const pusher = new Pusher(import.meta.env.VITE_PUSHER_API_KEY, {
+      cluster: "mt1",
+    });
+
+    const channel = pusher.subscribe("chat");
+    channel.bind("trigger-chat", function (data: string) {
+
+      arrayOfMessages.push({message:data});
+      messageContext?.setMessages(arrayOfMessages);
+
+    });
+
+    return () => {
+      pusher.unsubscribe("chat");
+    };
+  }, []);
+
   return (
     <div className="px-10 py-5 bg-[#120F13] ">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="flex  py-3 bg-[#3C393F] shadow-md rounded-md">
           <input
             type="text"
@@ -44,4 +87,4 @@ const InputContainer = (props: Props) => {
   );
 };
 
-export default InputContainer;
+export default React.memo(InputContainer);
