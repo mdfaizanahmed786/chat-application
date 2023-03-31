@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Channels from "./Channels";
 import axios from "axios";
+import { useDebouncedState, useDebouncedValue } from "@mantine/hooks";
 
 type Props = {};
 
 const ManageChatMembers = (props: Props) => {
-  const [search, setSearch] = React.useState("");
-  const [channels, setChannels] = useState([]);
+  const [value, setValue] = useState('');
+  const [debounced] = useDebouncedValue(value, 500);
+
+  const [channels, setChannels] = useState<Channel[]>([]);
 
 useEffect(() => {
   const fetchChannels = async () => {
     const { data } = await axios.get(
-      `${import.meta.env.VITE_BACKEND}/api/v1/channel?cname=${search}`,
+      `${import.meta.env.VITE_BACKEND}/api/v1/channel?cname=${debounced}`,
       {
         headers: {
           Authorization: `Bearer ` + import.meta.env.VITE_AUTHORIZATION,
@@ -23,7 +26,7 @@ useEffect(() => {
     setChannels(data);
   };
   fetchChannels();
-}, [search]);
+}, [debounced]);
   return (
     <div className="flex-1 py-7 overflow-y-auto h-full px-3">
       <div className="flex  items-center py-3 rounded-md bg-[#3C393F]">
@@ -48,8 +51,8 @@ useEffect(() => {
           name="search"
           placeholder="Search"
           className="outline-none  border-none flex-1 px-2"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
         />
       </div>
       <Channels channels={channels}/>

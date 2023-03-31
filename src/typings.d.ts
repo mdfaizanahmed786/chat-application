@@ -15,3 +15,18 @@ type MessageContext = {
 interface PusherMessage extends ArrayOfmessages {
 allMessages: ArrayOfmessages[];
 }
+
+
+interface Channel  {
+  _id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  createdBy: string;
+  users: string[];
+  updatedAt: string;
+};
+
+interface Channels{
+  channels: Channel[];
+}

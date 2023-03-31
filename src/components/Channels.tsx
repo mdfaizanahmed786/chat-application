@@ -1,12 +1,11 @@
 import React  from "react";
 
-type Props = {};
 
-const Channels = ({channels}) => {
 
+const Channels = (channels:Channels) => {
   return (
     <div className="py-4 cursor-pointer  ">
-      {channels.map((channel) => (
+      {channels.channels.map((channel:Channel) => (
         <div
           key={channel._id}
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"
@@ -14,7 +13,7 @@ const Channels = ({channels}) => {
           <div className="flex items-center">
             <div className="avatar">
               <div className="w-9 rounded-full">
-                <img src="https://ui-avatars.com/api/?background=random&size=128&rounded=true&format=png&name=amazing" />
+                <img src={`https://ui-avatars.com/api/?background=random&size=128&rounded=true&format=png&name=${channel.name}`} />
               </div>
             </div>
             <div className="ml-3">
