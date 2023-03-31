@@ -1,8 +1,9 @@
-import React from "react";
+import React  from "react";
 
 type Props = {};
 
 const Channels = (props: Props) => {
+
   return (
     <div className="py-4 cursor-pointer  ">
       {Array.from({ length: 20 }).map((_, i) => (
@@ -13,7 +14,7 @@ const Channels = (props: Props) => {
           <div className="flex items-center">
             <div className="avatar">
               <div className="w-9 rounded-full">
-                <img src="https://image-upload-nidx.onrender.com/uploads/angry.jpg" />
+                <img src="https://ui-avatars.com/api/?background=random&size=128&rounded=true&format=png&name=amazing" />
               </div>
             </div>
             <div className="ml-3">

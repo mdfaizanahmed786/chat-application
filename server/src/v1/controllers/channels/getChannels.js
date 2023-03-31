@@ -10,10 +10,10 @@ const getChannels = async (req, res) => {
       return res.status(500).json({ message: err });
     }
   } else {
-    const channelName = req.query.cname;
-  
+    const channelName = req.query.cname.toLowerCase();
+
     try {
-      const channel = await Channel.findOne({ name: channelName });
+      const channel = await Channel.findOne({ name: { $regex: channelName, $options: 'i' } });
       if (!channel)
         return res.status(400).json({ message: "Channel does not exist" });
 

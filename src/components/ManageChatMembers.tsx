@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Channels from "./Channels";
+import axios from "axios";
 
 type Props = {};
-
+const [channels, setChannels] = useState([]);
+useEffect(() => {
+  const fetchChannels = async () => {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BACKEND}/api/v1/channel`,
+      {
+        headers: {
+          Authorization: `Bearer ` + import.meta.env.VITE_AUTHORIZATION,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    setChannels(data?.data);
+  };
+  fetchChannels();
+}, []);
 const ManageChatMembers = (props: Props) => {
   const [search, setSearch] = React.useState("");
   return (
