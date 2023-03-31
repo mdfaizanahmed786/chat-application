@@ -2,13 +2,13 @@ import React  from "react";
 
 type Props = {};
 
-const Channels = (props: Props) => {
+const Channels = ({channels}) => {
 
   return (
     <div className="py-4 cursor-pointer  ">
-      {Array.from({ length: 20 }).map((_, i) => (
+      {channels.map((channel) => (
         <div
-          key={i}
+          key={channel._id}
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"
         >
           <div className="flex items-center">
@@ -18,14 +18,14 @@ const Channels = (props: Props) => {
               </div>
             </div>
             <div className="ml-3">
-              <h1 className="text-white font-semibold">Channel Name</h1>
+              <h1 className="text-white font-semibold">{channel.name}</h1>
               <p className="text-gray-400 text-sm">Last message</p>
             </div>
           </div>
           <div className="flex-1"></div>
           <div className="flex items-center">
             <div className="ml-3">
-              <p className="text-gray-400 text-sm">12:00</p>
+              <p className="text-gray-400 text-sm">{new Date(channel.createdAt).getDate()}</p>
             </div>
           </div>
         </div>

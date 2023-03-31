@@ -13,9 +13,13 @@ const getChannels = async (req, res) => {
     const channelName = req.query.cname.toLowerCase();
 
     try {
-      const channel = await Channel.findOne({ name: { $regex: channelName, $options: 'i' } });
+    //  finOne gives only that object
+      const channel = await Channel.find({ name: { $regex: channelName, $options: 'i' } });
+      
+    
       if (!channel)
         return res.status(400).json({ message: "Channel does not exist" });
+     
 
       return res.status(200).json(channel);
     } catch (err) {

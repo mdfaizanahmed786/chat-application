@@ -3,11 +3,15 @@ import Channels from "./Channels";
 import axios from "axios";
 
 type Props = {};
-const [channels, setChannels] = useState([]);
+
+const ManageChatMembers = (props: Props) => {
+  const [search, setSearch] = React.useState("");
+  const [channels, setChannels] = useState([]);
+
 useEffect(() => {
   const fetchChannels = async () => {
     const { data } = await axios.get(
-      `${import.meta.env.VITE_BACKEND}/api/v1/channel`,
+      `${import.meta.env.VITE_BACKEND}/api/v1/channel?cname=${search}`,
       {
         headers: {
           Authorization: `Bearer ` + import.meta.env.VITE_AUTHORIZATION,
@@ -15,12 +19,11 @@ useEffect(() => {
         },
       }
     );
-    setChannels(data?.data);
+   
+    setChannels(data);
   };
   fetchChannels();
-}, []);
-const ManageChatMembers = (props: Props) => {
-  const [search, setSearch] = React.useState("");
+}, [search]);
   return (
     <div className="flex-1 py-7 overflow-y-auto h-full px-3">
       <div className="flex  items-center py-3 rounded-md bg-[#3C393F]">
@@ -49,7 +52,7 @@ const ManageChatMembers = (props: Props) => {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      <Channels />
+      <Channels channels={channels}/>
     </div>
   );
 };
