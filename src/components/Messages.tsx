@@ -28,7 +28,7 @@ const Messages = (props: Props) => {
               <p className="text-[#828282] font-semibold text-lg">
                 {message.userId?.name}
               </p>
-              <p className="text-gray-400 text-sm">{message.createdAt}</p>
+              <p className="text-gray-400 text-sm">{new Date(message.createdAt).toDateString()}</p>
             </div>
             <div>
               <p>{message.message}</p>

@@ -3,6 +3,7 @@ import Pusher from "pusher-js";
 import axios from "axios";
 import { MessagesContext } from "../context/messagesContext";
 
+
 type Props = {};
 
 const InputContainer = (props: Props) => {
@@ -12,7 +13,7 @@ const InputContainer = (props: Props) => {
   const [message, setMessage] = useState("");
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+  
     await axios.post(
       `${import.meta.env.VITE_BACKEND}/api/v1/send`,
       {
@@ -84,6 +85,7 @@ const InputContainer = (props: Props) => {
           </button>
         </div>
       </form>
+
     </div>
   );
 };

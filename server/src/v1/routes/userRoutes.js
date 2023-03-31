@@ -5,8 +5,8 @@ const authenticateUser = require("../middleware");
 
 const router = require("express").Router();
 
-router.post("/register", createUser);
-router.post("/login", loginUser);
+router.post("/auth/register", createUser);
+router.post("/auth/login", loginUser);
 router.get("/user/:userId", authenticateUser, getSingleUser);
 
 module.exports = router;
