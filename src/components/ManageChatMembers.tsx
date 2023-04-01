@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import {  useState } from "react";
 import Channels from "./Channels";
-import axios from "axios";
-import { useDebouncedState, useDebouncedValue } from "@mantine/hooks";
-import { useQuery } from "@tanstack/react-query";
+import {  useDebouncedValue } from "@mantine/hooks";
 
 type Props = {};
 
@@ -10,15 +8,6 @@ const ManageChatMembers = (props: Props) => {
   const [value, setValue] = useState('');
   const [debounced] = useDebouncedValue(value, 500);
 
-
-
-// useEffect(() => {
-  
-   
-//     setChannels(data);
-//   };
-//   fetchChannels();
-// }, [debounced]);
   return (
     <div className="flex-1 py-7 overflow-y-auto h-full px-3">
       <div className="flex  items-center py-3 rounded-md bg-[#3C393F]">
