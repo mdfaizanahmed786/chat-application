@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import React  from "react";
 
@@ -6,7 +6,101 @@ type Props = {
   debounced:string
 };
 
+const initialChannels = [
+  {
+    _id: "1",
+    name: "Channel 1",
+    description: "Channel 1 Description",
+    createdAt: "2021-09-01T12:00:00.000Z",
+    updatedAt: "2021-09-01T12:00:00.000Z",
+    createdBy:'6425be332b007edd139c253e',
+    users:['6425be332b007edd139c253e']
+  },
+  {
+    _id: "8",
+    name: "Channel 2",
+    description: "Channel 2 Description",
+    createdAt: "2021-09-01T12:00:00.000Z",
+    updatedAt: "2021-09-01T12:00:00.000Z",
+    createdBy:'6425be332b007edd139c253e',
+    users:['6425be332b007edd139c253e']
+  },
+  {
+    _id: "7",
+    name: "Channel 2",
+    description: "Channel 2 Description",
+    createdAt: "2021-09-01T12:00:00.000Z",
+    updatedAt: "2021-09-01T12:00:00.000Z",
+    createdBy:'6425be332b007edd139c253e',
+    users:['6425be332b007edd139c253e']
+  },
+  {
+    _id: "6",
+    name: "Channel 2",
+    description: "Channel 2 Description",
+    createdAt: "2021-09-01T12:00:00.000Z",
+    updatedAt: "2021-09-01T12:00:00.000Z",
+    createdBy:'6425be332b007edd139c253e',
+    users:['6425be332b007edd139c253e']
+  },
+  {
+    _id: "5",
+    name: "Channel 2",
+    description: "Channel 2 Description",
+    createdAt: "2021-09-01T12:00:00.000Z",
+    updatedAt: "2021-09-01T12:00:00.000Z",
+    createdBy:'6425be332b007edd139c253e',
+    users:['6425be332b007edd139c253e']
+  },
+  {
+    _id: "4",
+    name: "Channel 2",
+    description: "Channel 2 Description",
+    createdAt: "2021-09-01T12:00:00.000Z",
+    updatedAt: "2021-09-01T12:00:00.000Z",
+    createdBy:'6425be332b007edd139c253e',
+    users:['6425be332b007edd139c253e']
+  },
+  {
+    _id: "3",
+    name: "Channel 2",
+    description: "Channel 2 Description",
+    createdAt: "2021-09-01T12:00:00.000Z",
+    updatedAt: "2021-09-01T12:00:00.000Z",
+    createdBy:'6425be332b007edd139c253e',
+    users:['6425be332b007edd139c253e']
+  },
+  {
+    _id: "3",
+    name: "Channel 2",
+    description: "Channel 2 Description",
+    createdAt: "2021-09-01T12:00:00.000Z",
+    updatedAt: "2021-09-01T12:00:00.000Z",
+    createdBy:'6425be332b007edd139c253e',
+    users:['6425be332b007edd139c253e']
+  },
+  {
+    _id: "3",
+    name: "Channel 2",
+    description: "Channel 2 Description",
+    createdAt: "2021-09-01T12:00:00.000Z",
+    updatedAt: "2021-09-01T12:00:00.000Z",
+    createdBy:'6425be332b007edd139c253e',
+    users:['6425be332b007edd139c253e']
+  },
+  {
+    _id: "3",
+    name: "Channel 2",
+    description: "Channel 2 Description",
+    createdAt: "2021-09-01T12:00:00.000Z",
+    updatedAt: "2021-09-01T12:00:00.000Z",
+    createdBy:'6425be332b007edd139c253e',
+    users:['6425be332b007edd139c253e']
+  },
+]
+
 const Channels = ({debounced}:Props) => {
+  const queryClient = useQueryClient()
   
   const fetchChannels = async (search:string) => {
     const { data } = await axios.get(
@@ -24,14 +118,15 @@ const Channels = ({debounced}:Props) => {
   const { isLoading, isError, data, error } = useQuery({
     queryKey:['channels', debounced],
     queryFn:()=> fetchChannels(debounced),
+    staleTime:30 * 1000 // 1/2 minute
   })
 
   if (isLoading) {
     return <div>Loading yaar..</div>
   }
   return (
-    <div className="py-4 cursor-pointer  ">
-      {data.map((channel:Channel) => (
+    <div className="py-4  cursor-pointer">
+      {initialChannels.map((channel:Channel) => (
         <div
           key={channel._id}
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"
