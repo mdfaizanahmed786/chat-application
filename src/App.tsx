@@ -1,6 +1,7 @@
+import { Routes } from "react-router";
 import Chat from "./components/Chat";
 import Sidebar from "./components/Sidebar";
-import {MessagesProvider} from "./context/messagesContext";
+import { MessagesProvider } from "./context/messagesContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {
@@ -8,11 +9,13 @@ function App() {
   return (
     <div className="flex max-w-full overflow-hidden">
       <QueryClientProvider client={queryClient}>
-      <MessagesProvider>
-        <Sidebar />
+      
+          <MessagesProvider>
+            <Sidebar />
 
-        <Chat />
-      </MessagesProvider>
+            <Chat />
+          </MessagesProvider>
+       
       </QueryClientProvider>
     </div>
   );
