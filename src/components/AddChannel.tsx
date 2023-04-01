@@ -2,9 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 
-type Props = {};
 
-const AddChannel = (props: Props) => {
+
+const AddChannel = () => {
   const [channelName, setChannelName] = useState<string>("");
   const [channelDescription, setChannelDescription] = useState<string>("");
   const handleCreateChannel = async () => {
@@ -79,7 +79,9 @@ const AddChannel = (props: Props) => {
 
       <input type="checkbox" id="my-modal-6" className="modal-toggle" />
       <div className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box bg-[#120F13]">
+     
+        <div className="modal-box relative bg-[#120F13]">
+      <label htmlFor="my-modal-6" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
           <div className="font-semibold text-lg mb-2 text-center">
             Create Channel
           </div>
@@ -120,6 +122,7 @@ const AddChannel = (props: Props) => {
             )}
           </div>
         </div>
+      
       </div>
       <Toaster position="top-right" reverseOrder={false} />
     </div>

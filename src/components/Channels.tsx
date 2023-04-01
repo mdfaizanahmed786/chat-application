@@ -1,11 +1,37 @@
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import React  from "react";
 
+type Props = {
+  debounced:string
+};
 
+const Channels = ({debounced}:Props) => {
+  
+  const fetchChannels = async (search:string) => {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BACKEND}/api/v1/channel?cname=${search}`,
+      {
+        headers: {
+          Authorization: `Bearer ` + import.meta.env.VITE_AUTHORIZATION,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return data;
+  }
 
-const Channels = (channels:Channels) => {
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey:['channels', debounced],
+    queryFn:()=> fetchChannels(debounced),
+  })
+
+  if (isLoading) {
+    return <div>Loading yaar..</div>
+  }
   return (
     <div className="py-4 cursor-pointer  ">
-      {channels.channels.map((channel:Channel) => (
+      {data.map((channel:Channel) => (
         <div
           key={channel._id}
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"

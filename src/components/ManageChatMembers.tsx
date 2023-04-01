@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Channels from "./Channels";
 import axios from "axios";
 import { useDebouncedState, useDebouncedValue } from "@mantine/hooks";
+import { useQuery } from "@tanstack/react-query";
 
 type Props = {};
 
@@ -9,24 +10,15 @@ const ManageChatMembers = (props: Props) => {
   const [value, setValue] = useState('');
   const [debounced] = useDebouncedValue(value, 500);
 
-  const [channels, setChannels] = useState<Channel[]>([]);
 
-useEffect(() => {
-  const fetchChannels = async () => {
-    const { data } = await axios.get(
-      `${import.meta.env.VITE_BACKEND}/api/v1/channel?cname=${debounced}`,
-      {
-        headers: {
-          Authorization: `Bearer ` + import.meta.env.VITE_AUTHORIZATION,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+
+// useEffect(() => {
+  
    
-    setChannels(data);
-  };
-  fetchChannels();
-}, [debounced]);
+//     setChannels(data);
+//   };
+//   fetchChannels();
+// }, [debounced]);
   return (
     <div className="flex-1 py-7 overflow-y-auto h-full px-3">
       <div className="flex  items-center py-3 rounded-md bg-[#3C393F]">
@@ -55,7 +47,7 @@ useEffect(() => {
           onChange={(e) => setValue(e.target.value)}
         />
       </div>
-      <Channels channels={channels}/>
+      <Channels debounced={debounced}/>
     </div>
   );
 };
