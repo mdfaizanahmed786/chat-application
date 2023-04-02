@@ -154,6 +154,15 @@ const Channels = ({ debounced }: Props) => {
     
   });
 
+  if(mutation.isSuccess){
+    toast.success("Channel Created Successfully", {
+      style: {
+        borderRadius: "6px",
+        background: "#333",
+        color: "#fff",
+      },
+    })
+  }
 
 
   

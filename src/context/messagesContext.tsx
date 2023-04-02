@@ -1,26 +1,14 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { createContext, useState } from "react";
 
+const MessagesContext = createContext<MessageContext | null>(null);
 
-const MessagesContext=createContext<MessageContext | null>(null);
+const MessagesProvider = ({ children }: { children: React.ReactNode }) => {
+  const [messages, setMessages] = useState<ArrayOfmessages[]>([]);
+  return (
+    <MessagesContext.Provider value={{ messages, setMessages }}>
+      {children}
+    </MessagesContext.Provider>
+  );
+};
 
-
-
-
-const MessagesProvider=({children}:{
-    children:React.ReactNode
-})=>{
-
-
-    const [messages, setMessages]=useState<ArrayOfmessages[]>([]);
-    return (
-        <MessagesContext.Provider  value={{messages, setMessages}}>
-         
-           {children}
-      
-        </MessagesContext.Provider>
-    )
-}
-
-
-export {MessagesProvider, MessagesContext}
+export { MessagesContext, MessagesProvider };
