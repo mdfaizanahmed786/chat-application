@@ -30,3 +30,11 @@ interface Channel  {
 interface Channels{
   channels: Channel[];
 }
+
+type User={
+  _id:string;
+  email:string;
+  channels:string[];
+  name:string;
+  
+}
