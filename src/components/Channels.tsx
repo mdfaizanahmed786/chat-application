@@ -1,6 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useState } from "react";
+import { toast } from "react-hot-toast";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
 
 type Props = {
   debounced: string;
@@ -109,7 +112,7 @@ const Channels = ({ debounced }: Props) => {
       `${import.meta.env.VITE_BACKEND}/api/v1/channel?cname=${search}`,
       {
         headers: {
-          Authorization: `Bearer ` + import.meta.env.VITE_AUTHORIZATION,
+          Authorization: `Bearer ` +  JSON.parse(localStorage.getItem("token") as string)?.token,
           "Content-Type": "application/json",
         },
       }
@@ -121,73 +124,39 @@ const Channels = ({ debounced }: Props) => {
     description: string;
     createdBy: string;
   }) => {
-    //     // try {
-    //     // const notification=toast.loading("Creating Channel...", {
-    //     //     style: {
-    //     //       borderRadius: "6px",
-    //     //       background: "#333",
-    //     //       color: "#fff",
-    //     //     },
-    //     //   });
     const { data } = await axios.post(
       `${import.meta.env.VITE_BACKEND}/api/v1/channel`,
       mutationData,
 
       {
         headers: {
-          Authorization: `Bearer ` + import.meta.env.VITE_AUTHORIZATION,
+          Authorization:
+            `Bearer ` +
+            JSON.parse(localStorage.getItem("token") as string)?.token,
           "Content-Type": "application/json",
         },
       }
     );
     return data;
-    //     //   if (data?.success) {
-    //     //     toast.success("Channel Created Successfully", {
-    //     //       id: notification,
-    //     //       style: {
-    //     //         borderRadius: "6px",
-    //     //         background: "#333",
-    //     //         color: "#fff",
-    //     //       },
-    //     //     });
-    //     //
-    //     //   }
-    //     // } catch (err:any) {
-    //     //   toast.error(JSON.stringify(err?.message), {
-    //     //     style: {
-    //     //       borderRadius: "6px",
-    //     //       background: "#333",
-    //     //       color: "#fff",
-    //     //     },
-
-    //     //   })
-    //     // }
   };
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey: ["channel", debounced],
+    queryFn: () => fetchChannels(debounced),
+   
+  
+  
+  });
 
   const mutation = useMutation({
     mutationFn: handleCreateChannel,
-    onSuccess: (data) => {
-      queryClient.setQueryData(["channels", ""], (oldData: any) => [
-        ...oldData,
-        data.channel,
-      ]);
-    },
-  });
-
-  const createChannel = () => {
-    mutation.mutate({
-      name: channelName,
-      description: channelDescription,
-      createdBy: "6425be332b007edd139c253e",
-    });
+    onSuccess:(data) => queryClient.invalidateQueries(['channel'])
+     
     
-  };
-
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["channels", debounced],
-    queryFn: () => fetchChannels(debounced),
-    staleTime: 1000 * 30,
   });
+
+
+
+  
 
   if (isLoading) {
     return <div>Loading yaar..</div>;
@@ -222,7 +191,6 @@ const Channels = ({ debounced }: Props) => {
           </div>
         </div>
       ))}
-
 
       <input type="checkbox" id="my-modal-6" className="modal-toggle" />
       <div className="modal modal-bottom sm:modal-middle">
@@ -262,7 +230,11 @@ const Channels = ({ debounced }: Props) => {
             {channelName && channelDescription ? (
               <label
                 htmlFor="my-modal-6"
-                onClick={createChannel}
+                onClick={()=>mutation.mutate({
+                  name: channelName,
+                  description: channelDescription,
+                  createdBy: "6425be332b007edd139c253e",
+                })}
                 className="bg-[#2F80ED] text-white rounded-md px-3 py-2 cursor-pointer hover:bg-blue-600 transition"
               >
                 Save

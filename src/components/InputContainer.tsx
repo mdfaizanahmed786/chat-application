@@ -8,7 +8,7 @@ type Props = {};
 
 const InputContainer = (props: Props) => {
   const messageContext = useContext<MessageContext | null>(MessagesContext);
-  console.log(messageContext?.messages);
+
 
   const [message, setMessage] = useState("");
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,7 +23,7 @@ const InputContainer = (props: Props) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + import.meta.env.VITE_AUTHORIZATION,
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token") as string)?.token,
         },
       }
     );

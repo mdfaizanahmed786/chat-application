@@ -23,7 +23,13 @@ if(user){
     e.preventDefault();
     try {
       if (!email || !password || !name) {
-        toast.error("Please check your inputs!");
+        toast.error("Please check your inputs!", {
+          style: {
+            borderRadius: "6px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
         return;
       }
 
@@ -36,14 +42,29 @@ if(user){
         }
       );
       if (data?.success) {
-        toast.success("Login successful!");
+        toast.success("Signup successful!", {
+          style: {
+            borderRadius: "6px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
         localStorage.setItem(
           "token",
           JSON.stringify({ token: data?.token, user: data?._id })
         );
+        window.location.replace("/");
       }
     } catch (err: any) {
-      toast.error("Something unexpected happen! Please check your inputs!");
+      toast.error("Something unexpected happen! Please check your inputs!", {
+        
+          style: {
+            borderRadius: "6px",
+            background: "#333",
+            color: "#fff",
+          },
+        
+      });
     }
   };
   return (
