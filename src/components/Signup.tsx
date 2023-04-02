@@ -1,7 +1,7 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 type Props = {};
 
@@ -9,6 +9,16 @@ const Signup = (props: Props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+const location=useLocation();
+useEffect(()=>{
+const user=JSON.parse(localStorage.getItem("token") as string);
+if(user){
+  location.pathname="/"
+  window.location.replace("/")
+}
+
+},[location.pathname])
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {

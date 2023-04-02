@@ -1,13 +1,22 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 type Props = {};
 
 const Login = (props: Props) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  useEffect(()=>{
+    const user=JSON.parse(localStorage.getItem("token") as string);
+    if(user){
+     
+      window.location.replace("/")
+    }
+    
+    },[location.pathname])
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email || !password) {
@@ -36,6 +45,7 @@ const Login = (props: Props) => {
   };
 
   return (
+    <>
     <div className="bg-gradient-to-r h-screen flex justify-center items-center from-[#2A303C] to-[#0B090C]">
       <section className="w-full">
         <div className="flex flex-col  items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -104,6 +114,7 @@ const Login = (props: Props) => {
       </section>
       <Toaster position="top-center" reverseOrder={false} />
     </div>
+    </>
   );
 };
 

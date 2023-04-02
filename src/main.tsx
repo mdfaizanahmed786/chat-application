@@ -6,10 +6,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignedInStack from "./SignedInStack";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import Root from "./Root";
+
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
+    
     <Router>
       <Routes>
         <Route path="/" element={<SignedInStack />} />

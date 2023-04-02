@@ -1,10 +1,24 @@
-import React from 'react'
-import App from './App'
+import React, { useEffect, useState } from "react";
+import App from "./App";
+import { useLocation } from "react-router-dom";
+import LoadingBar from "react-top-loading-bar";
 
-type Props = {}
+type Props = {};
 
 const SignedInStack = (props: Props) => {
-  return <App/>
-}
+  const location = useLocation();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("token") as string);
+    if (!user) {
+      window.location.replace("/login");
+    }
+  }, [location.pathname]);
 
-export default SignedInStack
+  return (
+    <>
+      <App location={location.pathname} />
+    </>
+  );
+};
+
+export default SignedInStack;
