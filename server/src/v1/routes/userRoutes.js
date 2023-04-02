@@ -7,7 +7,7 @@ const router = require("express").Router();
 
 router.post("/auth/register", createUser);
 router.post("/auth/login", loginUser);
-router.get("/user/:userId", authenticateUser, getSingleUser);
+router.get("/users/:userId", authenticateUser, getSingleUser);
 
 module.exports = router;
 
