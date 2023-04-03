@@ -7,8 +7,13 @@ type Props = {};
 
 const InputContainer = (props: Props) => {
   const messageContext = useContext<MessageContext | null>(MessagesContext);
+  const loggedInUser = JSON.parse(localStorage.getItem("token") as string);
+  const joinedUser = messageContext?.messages?.channel?.users?.filter(
+    (user) => user?._id === loggedInUser?.user
+  );
 
   const [message, setMessage] = useState("");
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -16,7 +21,7 @@ const InputContainer = (props: Props) => {
       `${import.meta.env.VITE_BACKEND}/api/v1/send`,
       {
         message,
-        channelId: messageContext?.channelId,
+        channelId: messageContext?.messages?.channel?._id,
       },
       {
         headers: {
@@ -38,10 +43,9 @@ const InputContainer = (props: Props) => {
 
     const channel = pusher.subscribe("chat");
     channel.bind("trigger-chat", function (data: ChannelState) {
-   
       messageContext?.setMessages?.({
         ...messageContext?.messages,
-        channel:data?.channel,
+        channel: data?.channel,
       });
     });
 
@@ -61,6 +65,7 @@ const InputContainer = (props: Props) => {
             className="outline-none border-none flex-1 px-4"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            disabled={joinedUser?.length === 0}
           />
           <button
             disabled={!message}

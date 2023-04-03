@@ -31,7 +31,7 @@ const Channels = ({ debounced }: Props) => {
   };
 
   // Function to get single channel
-  const fetchSingleChannel = async (id: string) => {
+  const fetchSingleChannel = async (id: string | undefined) => {
     const { data } = await axios.get(
       `${import.meta.env.VITE_BACKEND}/api/v1/getChannel/${id}`,
       {
@@ -42,7 +42,10 @@ const Channels = ({ debounced }: Props) => {
       }
     );
 
+ 
+
     if (data) {
+    
       messageContext?.setMessages?.({
         ...messageContext?.messages,
         channel: data,
@@ -90,12 +93,15 @@ const Channels = ({ debounced }: Props) => {
   // Query to get single channel
   const { data: singleChannel } = useQuery({
     queryKey: ["channel"],
-    queryFn: () => fetchSingleChannel(channelId),
-    onSuccess: () => {
-      messageContext?.setChannelId(channelId);
-      setChannelId("");
-    },
-    enabled: !!channelId,
+    queryFn: () => fetchSingleChannel(messageContext?.channelId),
+    onSuccess:(data)=>{messageContext?.setChannelId("");  messageContext?.setMessages?.({
+      ...messageContext?.messages,
+      channel: data,
+    });
+   
+  },
+   
+    enabled: !!messageContext?.channelId,
   });
 
   // Mutation to create channel
@@ -172,10 +178,11 @@ const Channels = ({ debounced }: Props) => {
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"
           onClick={() => {
             messageContext?.setChannelId(channel._id);
-            setChannelId(channel._id);
+           
+          
           }}
         >
-          <div className="flex items-center">
+          <div className="flex items-center"  >
             <div className="avatar">
               <div className="w-9 rounded-full">
                 <img
@@ -197,7 +204,10 @@ const Channels = ({ debounced }: Props) => {
                 <label
                   htmlFor="my-modal-4"
                   className="text-white text-sm bg-gray-600 rounded-lg"
-                  onClick={() => setChannelId(channel._id)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setChannelId(channel._id);
+                  }}
                 >
                   <p className="bg-[#252329] rounded-lg cursor-pointer">
                     <svg

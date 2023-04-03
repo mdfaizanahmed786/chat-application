@@ -1,6 +1,5 @@
-import React from "react";
-import AddChannel from "./AddChannel";
 import AboutMe from "./AboutMe";
+import AddChannel from "./AddChannel";
 import ManageChatMembers from "./ManageChatMembers";
 
 type Props = {};
