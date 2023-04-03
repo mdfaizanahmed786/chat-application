@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
+import { MessagesContext } from "../context/messagesContext";
 
 type Props = {
   debounced: string;
@@ -14,6 +15,7 @@ const Channels = ({ debounced }: Props) => {
   const [channelId, setChannelId] = useState("");
   const [channelDescription, setChannelDescription] = useState<string>("");
   const user = JSON.parse(localStorage.getItem("token") as string);
+  const messageContext = useContext<MessageContext | null>(MessagesContext);
 
   const fetchChannels = async (search: string) => {
     const { data } = await axios.get(
@@ -131,6 +133,7 @@ const Channels = ({ debounced }: Props) => {
         <div
           key={channel._id}
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"
+          onClick={()=>messageContext?.setChannelId(channel._id)}
         >
           <div className="flex items-center">
             <div className="avatar">
