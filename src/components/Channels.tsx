@@ -109,13 +109,13 @@ const joinChannel=useMutation({
 })
 
 // loading state
-  if (isLoading) {
+  if (!isLoading) {
     return (
     <div>
       {Array.from({length:7}).map((_,i)=>(
         <div key={i} className="flex items-center gap-2 w-full mt-5">
-      <Skeleton circle={true} height={40} width={40} highlightColor="#696969" baseColor="#3C393F"/>
-      <Skeleton height={40} width={220} highlightColor=" 
+      <Skeleton circle={true} height={45} width={45} highlightColor="#696969" baseColor="#3C393F"/>
+      <Skeleton height={45} width={220} highlightColor=" 
 #696969  " baseColor="#3C393F" />
         </div>
   ))}
@@ -125,7 +125,7 @@ const joinChannel=useMutation({
 
   return (
     <div className="py-4  cursor-pointer">
-      {data.map((channel: Channel) => (
+      {data?.map((channel: Channel) => (
         <div
           key={channel._id}
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"
