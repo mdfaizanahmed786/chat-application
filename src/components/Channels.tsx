@@ -104,6 +104,7 @@ const initialChannels = [
 const Channels = ({ debounced }: Props) => {
   const queryClient = useQueryClient();
   const [channelName, setChannelName] = useState<string>("");
+  const [channelId, setChannelId]=useState('')
   const [channelDescription, setChannelDescription] = useState<string>("");
   const user=JSON.parse(localStorage.getItem("token") as string)
 
@@ -139,6 +140,16 @@ const Channels = ({ debounced }: Props) => {
         },
       }
     );
+    if(data?.success){
+
+      toast.success("Channel Created Successfully", {
+        style: {
+          borderRadius: "6px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+    }
     return data;
   };
   const { isLoading, isError, data, error } = useQuery({
@@ -151,25 +162,32 @@ const Channels = ({ debounced }: Props) => {
     onSuccess: () => queryClient.invalidateQueries(["channel"]),
   });
 
-  if (mutation.isSuccess) {
-    toast.success("Channel Created Successfully", {
+ 
+
+  
+
+  const handleJoinChannel=async(id:string)=>{
+   const {data}=await axios.post(`${import.meta.env.VITE_BACKEND}/api/v1/channel/${id}`, {}, {
+    headers:{
+      Authorization:`Bearer `+user?.token
+    }
+   })
+  if(data?.success){
+    toast.success('Joined channel', {
       style: {
         borderRadius: "6px",
         background: "#333",
         color: "#fff",
       },
-    });
+    })
   }
-
-  console.log(data, "Channel Data")
-
-  const handleJoinChannel=async()=>{
-   
+   return data;
   }
 
 const channelMutate=useMutation({
   mutationFn:handleJoinChannel,
-  
+  onSuccess:()=>queryClient.invalidateQueries(['channel'])
+
 })
 
   if (isLoading) {
@@ -201,6 +219,9 @@ const channelMutate=useMutation({
             {channel.users.filter(channelUser=>channelUser._id===user?.user).length===0 && <label
                 htmlFor="my-modal-4"
                 className="text-white text-sm bg-gray-600 rounded-lg"
+                onClick={()=>setChannelId(channel._id)}
+
+                
               >
                  <p className="bg-[#252329] rounded-lg cursor-pointer">
                   <svg
@@ -242,6 +263,7 @@ const channelMutate=useMutation({
           <label
             htmlFor="my-modal-4"
             className="bg-[#2F80ED] btn text-white rounded-md  cursor-pointer hover:bg-blue-600 transition"
+            onClick={()=>channelMutate.mutate(channelId)}
           >
             Yes
           </label>
