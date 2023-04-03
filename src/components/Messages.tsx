@@ -7,10 +7,10 @@ const Messages = (props: Props) => {
   const colorArray = ["#3C393F", "#120F13"];
   const messageContext = useContext<MessageContext | null>(MessagesContext);
 
-
+console.log(messageContext?.messages?.channel?.messages)
   return (
     <div>
-      {messageContext?.messages?.map((message: ArrayOfmessages, i: number) => (
+      {messageContext?.messages?.channel?._id!=='' && messageContext?.messages?.channel?.messages?.map((message: ArrayOfmessages, i: number) => (
         <div
           key={message._id}
           className={`flex gap-4 w-full bg-[${

@@ -39,7 +39,7 @@ const sendMessage = async (req, res) => {
 
     
     pusher.trigger("chat", "trigger-chat", {
-      allMessages:allMessages[0].messages,
+      channel:allMessages[0],
     });
    
 

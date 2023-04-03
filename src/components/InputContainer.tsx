@@ -37,11 +37,12 @@ const InputContainer = (props: Props) => {
     });
 
     const channel = pusher.subscribe("chat");
-    channel.bind("trigger-chat", function (data: PusherMessage) {
-      messageContext?.setMessages?.(
-        data?.allMessages,
-        ...messageContext?.messages
-      );
+    channel.bind("trigger-chat", function (data: ChannelState) {
+   
+      messageContext?.setMessages?.({
+        ...messageContext?.messages,
+        channel:data?.channel,
+      });
     });
 
     return () => {

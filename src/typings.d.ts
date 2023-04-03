@@ -4,31 +4,63 @@ interface ArrayOfmessages {
   userId: {
     name: string;
     _id: string;
+    email?: string;
   };
   createdAt: string;
 }
-type MessageContext = {
-  messages: ArrayOfmessages[];
-  setMessages:Dispatch<SetStateAction<{ message: string; }[]>>
+
+interface NewChannel  {
+  _id: string;
+  name: string;
+  description?: string;
+  createdAt: string;
+  createdBy?: string;
+  users: {
+    _id: string;
+    name: string;
+    email: string;
+  }[];
+  updatedAt?: string;
+   messages:ArrayOfmessages[];
 };
 
-interface PusherMessage extends ArrayOfmessages {
-allMessages: ArrayOfmessages[];
+
+
+
+interface ChannelState {
+  channel:NewChannel;
+
+}
+
+
+
+
+
+
+type MessageContext = {
+  messages: ChannelState;
+  setMessages:Dispatch<SetStateAction<{ message: string; }[]>>
+  channelId:string;
+  setChannelId:Dispatch<SetStateAction<string>>
+};
+
+interface PusherMessage  {
+channel: ArrayOfmessages[];
 }
 
 
 interface Channel  {
   _id: string;
   name: string;
-  description: string;
+  description?: string;
   createdAt: string;
-  createdBy: string;
+  createdBy?: string;
   users: {
     _id: string;
     name: string;
     email: string;
   }[];
-  updatedAt: string;
+  updatedAt?: string;
 };
 
 interface Channels{
