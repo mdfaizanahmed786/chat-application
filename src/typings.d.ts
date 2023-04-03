@@ -38,7 +38,7 @@ interface Channels{
 type User={
   _id:string;
   email:string;
-  channels:string[];
+  channels:Channel[];
   name:string;
   
 }

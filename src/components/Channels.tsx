@@ -1,105 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 type Props = {
   debounced: string;
 };
 
-const initialChannels = [
-  {
-    _id: "1",
-    name: "Channel 1",
-    description: "Channel 1 Description",
-    createdAt: "2021-09-01T12:00:00.000Z",
-    updatedAt: "2021-09-01T12:00:00.000Z",
-    createdBy: "6425be332b007edd139c253e",
-    users: ["6425be332b007edd139c253e"],
-  },
-  {
-    _id: "8",
-    name: "Channel 2",
-    description: "Channel 2 Description",
-    createdAt: "2021-09-01T12:00:00.000Z",
-    updatedAt: "2021-09-01T12:00:00.000Z",
-    createdBy: "6425be332b007edd139c253e",
-    users: ["6425be332b007edd139c253e"],
-  },
-  {
-    _id: "7",
-    name: "Channel 2",
-    description: "Channel 2 Description",
-    createdAt: "2021-09-01T12:00:00.000Z",
-    updatedAt: "2021-09-01T12:00:00.000Z",
-    createdBy: "6425be332b007edd139c253e",
-    users: ["6425be332b007edd139c253e"],
-  },
-  {
-    _id: "6",
-    name: "Channel 2",
-    description: "Channel 2 Description",
-    createdAt: "2021-09-01T12:00:00.000Z",
-    updatedAt: "2021-09-01T12:00:00.000Z",
-    createdBy: "6425be332b007edd139c253e",
-    users: ["6425be332b007edd139c253e"],
-  },
-  {
-    _id: "5",
-    name: "Channel 2",
-    description: "Channel 2 Description",
-    createdAt: "2021-09-01T12:00:00.000Z",
-    updatedAt: "2021-09-01T12:00:00.000Z",
-    createdBy: "6425be332b007edd139c253e",
-    users: ["6425be332b007edd139c253e"],
-  },
-  {
-    _id: "4",
-    name: "Channel 2",
-    description: "Channel 2 Description",
-    createdAt: "2021-09-01T12:00:00.000Z",
-    updatedAt: "2021-09-01T12:00:00.000Z",
-    createdBy: "6425be332b007edd139c253e",
-    users: ["6425be332b007edd139c253e"],
-  },
-  {
-    _id: "3",
-    name: "Channel 2",
-    description: "Channel 2 Description",
-    createdAt: "2021-09-01T12:00:00.000Z",
-    updatedAt: "2021-09-01T12:00:00.000Z",
-    createdBy: "6425be332b007edd139c253e",
-    users: ["6425be332b007edd139c253e"],
-  },
-  {
-    _id: "3",
-    name: "Channel 2",
-    description: "Channel 2 Description",
-    createdAt: "2021-09-01T12:00:00.000Z",
-    updatedAt: "2021-09-01T12:00:00.000Z",
-    createdBy: "6425be332b007edd139c253e",
-    users: ["6425be332b007edd139c253e"],
-  },
-  {
-    _id: "3",
-    name: "Channel 2",
-    description: "Channel 2 Description",
-    createdAt: "2021-09-01T12:00:00.000Z",
-    updatedAt: "2021-09-01T12:00:00.000Z",
-    createdBy: "6425be332b007edd139c253e",
-    users: ["6425be332b007edd139c253e"],
-  },
-  {
-    _id: "3",
-    name: "Channel 2",
-    description: "Channel 2 Description",
-    createdAt: "2021-09-01T12:00:00.000Z",
-    updatedAt: "2021-09-01T12:00:00.000Z",
-    createdBy: "6425be332b007edd139c253e",
-    users: ["6425be332b007edd139c253e"],
-  },
-];
+
 
 const Channels = ({ debounced }: Props) => {
   const queryClient = useQueryClient();
@@ -122,6 +30,8 @@ const Channels = ({ debounced }: Props) => {
     );
     return data;
   };
+
+  // Function to create channel
   const handleCreateChannel = async (mutationData: {
     name: string;
     description: string;
@@ -163,7 +73,7 @@ const Channels = ({ debounced }: Props) => {
 
 
   // Mutation to create channel
-  const mutation = useMutation({
+  const channelMutation = useMutation({
     mutationFn: handleCreateChannel,
     onSuccess: () => queryClient.invalidateQueries(["channel"]),
   });
@@ -191,14 +101,15 @@ const Channels = ({ debounced }: Props) => {
   }
 
 // Mutation to join channel
-const channelMutate=useMutation({
+const joinChannel=useMutation({
   mutationFn:handleJoinChannel,
   onSuccess:()=>queryClient.invalidateQueries(['channel'])
 
 })
 
+// loading state
   if (isLoading) {
-    return <div>Loading yaar..</div>;
+    return <div>Loading channels..</div>;
   }
   return (
     <div className="py-4  cursor-pointer">
@@ -270,7 +181,7 @@ const channelMutate=useMutation({
           <label
             htmlFor="my-modal-4"
             className="bg-[#2F80ED] btn text-white rounded-md  cursor-pointer hover:bg-blue-600 transition"
-            onClick={()=>channelMutate.mutate(channelId)}
+            onClick={()=>joinChannel.mutate(channelId)}
           >
             Yes
           </label>
@@ -318,7 +229,7 @@ const channelMutate=useMutation({
               <label
                 htmlFor="my-modal-6"
                 onClick={() =>
-                  mutation.mutate({
+                  channelMutation.mutate({
                     name: channelName,
                     description: channelDescription,
                     createdBy: user?._id,
