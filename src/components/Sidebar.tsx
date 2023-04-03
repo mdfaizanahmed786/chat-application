@@ -1,6 +1,5 @@
 import React from "react";
 import AddChannel from "./AddChannel";
-import Members from "./Members";
 import AboutMe from "./AboutMe";
 import ManageChatMembers from "./ManageChatMembers";
 
