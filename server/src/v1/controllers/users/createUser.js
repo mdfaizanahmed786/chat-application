@@ -28,7 +28,7 @@ const createUser = async (req, res) => {
     );
 
     await user.save();
-    res.status(201).json({ token,  _id: user._id, success:true });
+    res.status(201).json({ token,  _id: user._id, name:user.name, success:true });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

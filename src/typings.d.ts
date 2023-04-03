@@ -23,7 +23,11 @@ interface Channel  {
   description: string;
   createdAt: string;
   createdBy: string;
-  users: string[];
+  users: {
+    _id: string;
+    name: string;
+    email: string;
+  }[];
   updatedAt: string;
 };
 

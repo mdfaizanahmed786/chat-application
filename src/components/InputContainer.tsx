@@ -3,33 +3,30 @@ import Pusher from "pusher-js";
 import axios from "axios";
 import { MessagesContext } from "../context/messagesContext";
 
-
 type Props = {};
 
 const InputContainer = (props: Props) => {
   const messageContext = useContext<MessageContext | null>(MessagesContext);
 
-
   const [message, setMessage] = useState("");
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     await axios.post(
       `${import.meta.env.VITE_BACKEND}/api/v1/send`,
       {
         message,
-        channelId:"6425beba2b007edd139c2546"
+        channelId: "6425beba2b007edd139c2546",
       },
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token") as string)?.token,
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("token") as string)?.token,
         },
       }
     );
-
-   
-    
 
     setMessage("");
   };
@@ -40,8 +37,11 @@ const InputContainer = (props: Props) => {
     });
 
     const channel = pusher.subscribe("chat");
-    channel.bind("trigger-chat", function (data:PusherMessage) {
-      messageContext?.setMessages?.(data?.allMessages, ...messageContext?.messages);
+    channel.bind("trigger-chat", function (data: PusherMessage) {
+      messageContext?.setMessages?.(
+        data?.allMessages,
+        ...messageContext?.messages
+      );
     });
 
     return () => {
@@ -52,7 +52,7 @@ const InputContainer = (props: Props) => {
   return (
     <div className="px-10 py-5 bg-[#120F13] ">
       <form onSubmit={handleSubmit}>
-        <div className="flex  py-3 bg-[#3C393F] shadow-md rounded-md">
+        <div className="flex  py-2 bg-[#3C393F] shadow-md rounded-md">
           <input
             type="text"
             name="chat"
@@ -85,7 +85,6 @@ const InputContainer = (props: Props) => {
           </button>
         </div>
       </form>
-
     </div>
   );
 };

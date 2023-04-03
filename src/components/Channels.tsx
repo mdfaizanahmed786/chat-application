@@ -2,8 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 type Props = {
   debounced: string;
@@ -106,13 +105,16 @@ const Channels = ({ debounced }: Props) => {
   const queryClient = useQueryClient();
   const [channelName, setChannelName] = useState<string>("");
   const [channelDescription, setChannelDescription] = useState<string>("");
+  const user=JSON.parse(localStorage.getItem("token") as string)
 
   const fetchChannels = async (search: string) => {
     const { data } = await axios.get(
       `${import.meta.env.VITE_BACKEND}/api/v1/channel?cname=${search}`,
       {
         headers: {
-          Authorization: `Bearer ` +  JSON.parse(localStorage.getItem("token") as string)?.token,
+          Authorization:
+            `Bearer ` +
+            user?.token,
           "Content-Type": "application/json",
         },
       }
@@ -132,7 +134,7 @@ const Channels = ({ debounced }: Props) => {
         headers: {
           Authorization:
             `Bearer ` +
-            JSON.parse(localStorage.getItem("token") as string)?.token,
+            user?.token,
           "Content-Type": "application/json",
         },
       }
@@ -142,30 +144,33 @@ const Channels = ({ debounced }: Props) => {
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["channel", debounced],
     queryFn: () => fetchChannels(debounced),
-   
-  
-  
   });
 
   const mutation = useMutation({
     mutationFn: handleCreateChannel,
-    onSuccess:(data) => queryClient.invalidateQueries(['channel'])
-     
-    
+    onSuccess: () => queryClient.invalidateQueries(["channel"]),
   });
 
-  if(mutation.isSuccess){
+  if (mutation.isSuccess) {
     toast.success("Channel Created Successfully", {
       style: {
         borderRadius: "6px",
         background: "#333",
         color: "#fff",
       },
-    })
+    });
   }
 
+  console.log(data, "Channel Data")
 
+  const handleJoinChannel=async()=>{
+   
+  }
+
+const channelMutate=useMutation({
+  mutationFn:handleJoinChannel,
   
+})
 
   if (isLoading) {
     return <div>Loading yaar..</div>;
@@ -193,13 +198,57 @@ const Channels = ({ debounced }: Props) => {
           <div className="flex-1"></div>
           <div className="flex items-center">
             <div className="ml-3">
-              <p className="text-gray-400 text-sm">
-                {new Date(channel.createdAt).getDate()}
-              </p>
+            {channel.users.filter(channelUser=>channelUser._id===user?.user).length===0 && <label
+                htmlFor="my-modal-4"
+                className="text-white text-sm bg-gray-600 rounded-lg"
+              >
+                 <p className="bg-[#252329] rounded-lg cursor-pointer">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"
+                    />
+                  </svg>
+                </p>
+                
+              </label>
+}
             </div>
           </div>
         </div>
       ))}
+
+      <input type="checkbox" id="my-modal-4" className="modal-toggle" />
+      <label htmlFor="my-modal-4" className="modal cursor-pointer">
+        <label className="modal-box relative  bg-[#120F13]" htmlFor="">
+          <h3 className="text-lg font-bold">
+            Are you sure you want to join this channel?
+          </h3>
+          <div className="flex w-full gap-4 justify-end mt-7">
+          <label
+            htmlFor="my-modal-4"
+            className="btn"
+          >
+           Cancel
+          </label>
+          <label
+            htmlFor="my-modal-4"
+            className="bg-[#2F80ED] btn text-white rounded-md  cursor-pointer hover:bg-blue-600 transition"
+          >
+            Yes
+          </label>
+
+          </div>
+        </label>
+      </label>
 
       <input type="checkbox" id="my-modal-6" className="modal-toggle" />
       <div className="modal modal-bottom sm:modal-middle">
@@ -239,11 +288,13 @@ const Channels = ({ debounced }: Props) => {
             {channelName && channelDescription ? (
               <label
                 htmlFor="my-modal-6"
-                onClick={()=>mutation.mutate({
-                  name: channelName,
-                  description: channelDescription,
-                  createdBy: "6425be332b007edd139c253e",
-                })}
+                onClick={() =>
+                  mutation.mutate({
+                    name: channelName,
+                    description: channelDescription,
+                    createdBy: user?._id,
+                  })
+                }
                 className="bg-[#2F80ED] text-white rounded-md px-3 py-2 cursor-pointer hover:bg-blue-600 transition"
               >
                 Save
