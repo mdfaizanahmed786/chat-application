@@ -152,11 +152,17 @@ const Channels = ({ debounced }: Props) => {
     }
     return data;
   };
+
+  // Query to get channels
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["channel", debounced],
     queryFn: () => fetchChannels(debounced),
+    refetchOnWindowFocus: false,
   });
 
+
+
+  // Mutation to create channel
   const mutation = useMutation({
     mutationFn: handleCreateChannel,
     onSuccess: () => queryClient.invalidateQueries(["channel"]),
@@ -165,7 +171,7 @@ const Channels = ({ debounced }: Props) => {
  
 
   
-
+// Function to create channel
   const handleJoinChannel=async(id:string)=>{
    const {data}=await axios.post(`${import.meta.env.VITE_BACKEND}/api/v1/channel/${id}`, {}, {
     headers:{
@@ -184,6 +190,7 @@ const Channels = ({ debounced }: Props) => {
    return data;
   }
 
+// Mutation to join channel
 const channelMutate=useMutation({
   mutationFn:handleJoinChannel,
   onSuccess:()=>queryClient.invalidateQueries(['channel'])
