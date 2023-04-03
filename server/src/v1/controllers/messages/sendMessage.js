@@ -39,9 +39,9 @@ const sendMessage = async (req, res) => {
 
     
     pusher.trigger("chat", "trigger-chat", {
-      allMessages,
+      allMessages:allMessages[0].messages,
     });
-    console.log(allMessages[0].messages)
+   
 
     return res.status(201).json({ success: true });
   } catch (err) {

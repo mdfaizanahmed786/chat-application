@@ -6,7 +6,7 @@ type Props = {};
 const Messages = (props: Props) => {
   const colorArray = ["#3C393F", "#120F13"];
   const messageContext = useContext<MessageContext | null>(MessagesContext);
-  console.log(messageContext?.messages)
+
 
   return (
     <div>

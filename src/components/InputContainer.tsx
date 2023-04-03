@@ -16,7 +16,7 @@ const InputContainer = (props: Props) => {
       `${import.meta.env.VITE_BACKEND}/api/v1/send`,
       {
         message,
-        channelId: "6425beba2b007edd139c2546",
+        channelId: "642a4b2de002876cb95995a8",
       },
       {
         headers: {
