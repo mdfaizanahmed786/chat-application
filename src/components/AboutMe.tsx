@@ -13,11 +13,11 @@ const AboutMe = (props: Props) => {
     <div className="md:py-1 z-50  flex justify-around items-center bg-[#0B090C] w-full">
       <div className="avatar placeholder">
         <div className="bg-neutral-focus text-neutral-content rounded-full w-12">
-          <span>RA</span>
+          <span>{user?.name?.slice(0,1)}</span>
         </div>
       </div>
       <div>
-        <p className="text-white">Riyan Ahmed</p>
+        <p className="text-white">{user?.name}</p>
       </div>
 
       <div className="dropdown dropdown-top dropdown-end ">

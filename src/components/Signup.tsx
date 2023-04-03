@@ -51,7 +51,7 @@ if(user){
         });
         localStorage.setItem(
           "token",
-          JSON.stringify({ token: data?.token, user: data?._id })
+          JSON.stringify({ token: data?.token, user: data?._id, name: data?.name })
         );
         window.location.replace("/");
       }
