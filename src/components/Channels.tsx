@@ -8,23 +8,19 @@ type Props = {
   debounced: string;
 };
 
-
-
 const Channels = ({ debounced }: Props) => {
   const queryClient = useQueryClient();
   const [channelName, setChannelName] = useState<string>("");
-  const [channelId, setChannelId]=useState('')
+  const [channelId, setChannelId] = useState("");
   const [channelDescription, setChannelDescription] = useState<string>("");
-  const user=JSON.parse(localStorage.getItem("token") as string)
+  const user = JSON.parse(localStorage.getItem("token") as string);
 
   const fetchChannels = async (search: string) => {
     const { data } = await axios.get(
       `${import.meta.env.VITE_BACKEND}/api/v1/channel?cname=${search}`,
       {
         headers: {
-          Authorization:
-            `Bearer ` +
-            user?.token,
+          Authorization: `Bearer ` + user?.token,
           "Content-Type": "application/json",
         },
       }
@@ -44,15 +40,12 @@ const Channels = ({ debounced }: Props) => {
 
       {
         headers: {
-          Authorization:
-            `Bearer ` +
-            user?.token,
+          Authorization: `Bearer ` + user?.token,
           "Content-Type": "application/json",
         },
       }
     );
-    if(data?.success){
-
+    if (data?.success) {
       toast.success("Channel Created Successfully", {
         style: {
           borderRadius: "6px",
@@ -71,61 +64,70 @@ const Channels = ({ debounced }: Props) => {
     refetchOnWindowFocus: false,
   });
 
-
-
   // Mutation to create channel
   const channelMutation = useMutation({
     mutationFn: handleCreateChannel,
     onSuccess: () => queryClient.invalidateQueries(["channel"]),
   });
 
- 
-
-  
-// Function to create channel
-  const handleJoinChannel=async(id:string)=>{
-   const {data}=await axios.post(`${import.meta.env.VITE_BACKEND}/api/v1/channel/${id}`, {}, {
-    headers:{
-      Authorization:`Bearer `+user?.token
+  // Function to create channel
+  const handleJoinChannel = async (id: string) => {
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_BACKEND}/api/v1/channel/${id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ` + user?.token,
+        },
+      }
+    );
+    if (data?.success) {
+      toast.success("Joined channel", {
+        style: {
+          borderRadius: "6px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
     }
-   })
-  if(data?.success){
-    toast.success('Joined channel', {
-      style: {
-        borderRadius: "6px",
-        background: "#333",
-        color: "#fff",
-      },
-    })
-  }
-   return data;
-  }
+    return data;
+  };
 
-// Mutation to join channel
-const joinChannel=useMutation({
-  mutationFn:handleJoinChannel,
-  onSuccess:()=>queryClient.invalidateQueries(['channel'])
+  // Mutation to join channel
+  const joinChannel = useMutation({
+    mutationFn: handleJoinChannel,
+    onSuccess: () => queryClient.invalidateQueries(["channel"]),
+  });
 
-})
-
-// loading state
-  if (!isLoading) {
+  // loading state
+  if (isLoading) {
     return (
-    <div>
-      {Array.from({length:7}).map((_,i)=>(
-        <div key={i} className="flex items-center gap-2 w-full mt-5">
-      <Skeleton circle={true} height={45} width={45} highlightColor="#696969" baseColor="#3C393F"/>
-      <Skeleton height={45} width={220} highlightColor=" 
-#696969  " baseColor="#3C393F" />
-        </div>
-  ))}
-    </div>
+      <div>
+        {Array.from({ length: 7 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-2 w-full mt-5">
+            <Skeleton
+              circle={true}
+              height={45}
+              width={45}
+              highlightColor="#696969"
+              baseColor="#3C393F"
+            />
+            <Skeleton
+              height={45}
+              width={220}
+              highlightColor=" 
+#696969  "
+              baseColor="#3C393F"
+            />
+          </div>
+        ))}
+      </div>
     );
   }
 
   return (
     <div className="py-4  cursor-pointer">
-      {data?.map((channel: Channel) => (
+      {data.map((channel: Channel) => (
         <div
           key={channel._id}
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"
@@ -146,32 +148,32 @@ const joinChannel=useMutation({
           <div className="flex-1"></div>
           <div className="flex items-center">
             <div className="ml-3">
-            {channel.users.filter(channelUser=>channelUser._id===user?.user).length===0 && <label
-                htmlFor="my-modal-4"
-                className="text-white text-sm bg-gray-600 rounded-lg"
-                onClick={()=>setChannelId(channel._id)}
-
-                
-              >
-                 <p className="bg-[#252329] rounded-lg cursor-pointer">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                  </svg>
-                </p>
-                
-              </label>
-}
+              {channel.users.filter(
+                (channelUser) => channelUser._id === user?.user
+              ).length === 0 && (
+                <label
+                  htmlFor="my-modal-4"
+                  className="text-white text-sm bg-gray-600 rounded-lg"
+                  onClick={() => setChannelId(channel._id)}
+                >
+                  <p className="bg-[#252329] rounded-lg cursor-pointer">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 4.5v15m7.5-7.5h-15"
+                      />
+                    </svg>
+                  </p>
+                </label>
+              )}
             </div>
           </div>
         </div>
@@ -184,20 +186,16 @@ const joinChannel=useMutation({
             Are you sure you want to join this channel?
           </h3>
           <div className="flex w-full gap-4 justify-end mt-7">
-          <label
-            htmlFor="my-modal-4"
-            className="btn"
-          >
-           Cancel
-          </label>
-          <label
-            htmlFor="my-modal-4"
-            className="bg-[#2F80ED] btn text-white rounded-md  cursor-pointer hover:bg-blue-600 transition"
-            onClick={()=>joinChannel.mutate(channelId)}
-          >
-            Yes
-          </label>
-
+            <label htmlFor="my-modal-4" className="btn">
+              Cancel
+            </label>
+            <label
+              htmlFor="my-modal-4"
+              className="bg-[#2F80ED] btn text-white rounded-md  cursor-pointer hover:bg-blue-600 transition"
+              onClick={() => joinChannel.mutate(channelId)}
+            >
+              Yes
+            </label>
           </div>
         </label>
       </label>

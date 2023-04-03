@@ -16,12 +16,12 @@ const ChannelSchema = new mongoose.Schema(
       email: { type: String, required: true },
     }],
     createdBy: { type: mongoose.Schema.Types.ObjectId, required: true,ref: "User",  },
-    // messages: [{
-    //   _id: { type: mongoose.Schema.Types.ObjectId, required: true,ref: "Message",  },
-    //   message: { type: String, required: true },
-    //   sender: { type: mongoose.Schema.Types.ObjectId, required: true,ref: "User",  },
-    //   createdAt: { type: Date, required: true },
-    // }],
+    messages: [{
+      _id: { type: mongoose.Schema.Types.ObjectId,ref: "Message",  },
+      message: { type: String },
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: "User",  },
+      createdAt: { type: Date},
+    }],
 
     
   },
