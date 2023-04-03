@@ -30,6 +30,27 @@ const Channels = ({ debounced }: Props) => {
     return data;
   };
 
+  // Function to get single channel
+  const fetchSingleChannel = async (id: string) => {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BACKEND}/api/v1/getChannel/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ` + user?.token,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (data) {
+      messageContext?.setMessages?.({
+        ...messageContext?.messages,
+        channel: data,
+      });
+    }
+    return data;
+  };
+
   // Function to create channel
   const handleCreateChannel = async (mutationData: {
     name: string;
@@ -66,10 +87,26 @@ const Channels = ({ debounced }: Props) => {
     refetchOnWindowFocus: false,
   });
 
+  // Query to get single channel
+  const { data: singleChannel } = useQuery({
+    queryKey: ["channel"],
+    queryFn: () => fetchSingleChannel(channelId),
+    onSuccess: () => {
+      messageContext?.setChannelId(channelId);
+      setChannelId("");
+    },
+    enabled: !!channelId,
+  });
+
   // Mutation to create channel
   const channelMutation = useMutation({
     mutationFn: handleCreateChannel,
-    onSuccess: () => queryClient.invalidateQueries(["channel"]),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["channel"]);
+      setChannelId("");
+      setChannelName("");
+      setChannelDescription("");
+    },
   });
 
   // Function to create channel
@@ -133,7 +170,10 @@ const Channels = ({ debounced }: Props) => {
         <div
           key={channel._id}
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"
-          onClick={()=>messageContext?.setChannelId(channel._id)}
+          onClick={() => {
+            messageContext?.setChannelId(channel._id);
+            setChannelId(channel._id);
+          }}
         >
           <div className="flex items-center">
             <div className="avatar">

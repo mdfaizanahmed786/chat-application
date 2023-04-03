@@ -11,6 +11,6 @@ const router = express.Router();
 router.get("/channel", authenticateUser, getChannels);
 router.post("/channel", authenticateUser, createChannel);
 router.post("/channel/:channelId", authenticateUser, joinChannel);
-router.post("/getChannel/:channelId", authenticateUser, getSingleChannel);
+router.get("/getChannel/:channelId", authenticateUser, getSingleChannel);
 
 module.exports = router;
