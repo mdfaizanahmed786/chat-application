@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import Skeleton from "react-loading-skeleton";
 
 type Props = {
   debounced: string;
@@ -109,8 +110,19 @@ const joinChannel=useMutation({
 
 // loading state
   if (isLoading) {
-    return <div>Loading channels..</div>;
+    return (
+    <div>
+      {Array.from({length:7}).map((_,i)=>(
+        <div key={i} className="flex items-center gap-2 w-full mt-5">
+      <Skeleton circle={true} height={40} width={40} highlightColor="#696969" baseColor="#3C393F"/>
+      <Skeleton height={40} width={220} highlightColor=" 
+#696969  " baseColor="#3C393F" />
+        </div>
+  ))}
+    </div>
+    );
   }
+
   return (
     <div className="py-4  cursor-pointer">
       {data.map((channel: Channel) => (

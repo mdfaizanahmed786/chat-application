@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import App from "./App";
-import { useLocation } from "react-router-dom";
-import LoadingBar from "react-top-loading-bar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect } from "react";
+import 'react-loading-skeleton/dist/skeleton.css';
+import { useLocation } from "react-router-dom";
+import App from "./App";
 
 type Props = {};
 
