@@ -1,7 +1,7 @@
 interface ArrayOfmessages {
   _id: string;
   message: string;
-  userId: {
+  user: {
     name: string;
     _id: string;
     email?: string;

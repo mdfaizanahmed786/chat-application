@@ -36,12 +36,13 @@ const InputContainer = (props: Props) => {
   }, []);
 
  const messageMutation=useMutation({
-   mutationFn: (data: { message: string; channel: string | undefined }) =>
+   mutationFn: (data: { message: string; channel: string | undefined,name:string|undefined }) =>
    axios.post(
      `${import.meta.env.VITE_BACKEND}/api/v1/send`,
      {
        message: data.message,
        channelId: data.channel,
+        name:data.name
       },
       {
         headers: {
@@ -64,6 +65,7 @@ const InputContainer = (props: Props) => {
       messageMutation.mutate({
         message,
         channel: messageContext?.messages?.channel?._id,
+        name:loggedInUser?.name
       });
   
       setMessage("");

@@ -2,6 +2,7 @@ const Pusher = require("pusher");
 const Message = require("../../models/Message");
 const mongoose = require("mongoose");
 const Channel = require("../../models/Channel");
+const User = require("../../models/User");
 
 
 const pusher = new Pusher({
@@ -16,11 +17,20 @@ const sendMessage = async (req, res) => {
   if (!req.body.message || !req.body.channelId) {
     return res.status(400).json({ message: "Message is required" });
   }
+  if(!req.body.name){
+    return res.status(401).json({ message: "Name is required" });
+  }
+
+  const checkName=await User.find({name:req.body.name})
+  if(!checkName) return res.status(403).json({message:"You are not authorized to send message!"})
 
   try {
     const newMessage = new Message({
       message: req.body.message,
-      userId: req.user._id,
+      user: {
+        userId: req.user._id,
+        name: req.body.name,
+      },
       channelId: req.body.channelId,
     });
 
@@ -34,8 +44,7 @@ const sendMessage = async (req, res) => {
     channel.messages.push(newMessage);
     await channel.save();
 
-    const allMessages = await Channel.find({ _id: req.body.channelId }).populate(
-      "messages.userId", "name email").populate("createdBy", "name email");
+    const allMessages = await Channel.find({ _id: req.body.channelId })
 
     
     pusher.trigger("chat", "trigger-chat", {

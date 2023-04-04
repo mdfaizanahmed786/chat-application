@@ -19,7 +19,17 @@ const ChannelSchema = new mongoose.Schema(
     messages: [{
       _id: { type: mongoose.Schema.Types.ObjectId,ref: "Message",  },
       message: { type: String },
-      userId: { type: mongoose.Schema.Types.ObjectId, ref: "User",  },
+      user: {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          
+        },
+        name: {
+          type: String,
+        required: true,
+        },
+      },
       createdAt: { type: Date},
     }],
 

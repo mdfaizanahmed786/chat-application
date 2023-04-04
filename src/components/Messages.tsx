@@ -9,6 +9,8 @@ const Messages = (props: Props) => {
   const messageContext = useContext<MessageContext | null>(MessagesContext);
   const joinedUsers = messageContext?.messages?.channel?.users;
  
+  
+ 
   return (
     <div className="h-full">
       {joinedUsers?.filter((user) => user._id === loggedInUser?.user).length !==
@@ -33,7 +35,7 @@ const Messages = (props: Props) => {
                   <div className="flex flex-col gap-2 justify-center flex-1 ">
                     <div className="flex gap-2 items-center">
                       <p className="text-[#828282] font-semibold text-lg">
-                        {message.userId?.name}
+                   {message?.user?.name}
                       </p>
                       <p className="text-gray-400 text-sm">
                         {new Date(message.createdAt).toDateString()}
