@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import Pusher from "pusher-js";
 import axios from "axios";
 import { MessagesContext } from "../context/messagesContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type Props = {};
 
 const InputContainer = (props: Props) => {
   const messageContext = useContext<MessageContext | null>(MessagesContext);
+  const queryClient = useQueryClient();
   const loggedInUser = JSON.parse(localStorage.getItem("token") as string);
   const joinedUser = messageContext?.messages?.channel?.users?.filter(
     (user) => user?._id === loggedInUser?.user
@@ -14,28 +16,7 @@ const InputContainer = (props: Props) => {
 
   const [message, setMessage] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    await axios.post(
-      `${import.meta.env.VITE_BACKEND}/api/v1/send`,
-      {
-        message,
-        channelId: messageContext?.messages?.channel?._id,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer " +
-            JSON.parse(localStorage.getItem("token") as string)?.token,
-        },
-      }
-    );
-
-    setMessage("");
-  };
-
+  
   useEffect(() => {
     const pusher = new Pusher(import.meta.env.VITE_PUSHER_API_KEY, {
       cluster: "mt1",
@@ -54,6 +35,42 @@ const InputContainer = (props: Props) => {
     };
   }, []);
 
+ const messageMutation=useMutation({
+   mutationFn: (data: { message: string; channel: string | undefined }) =>
+   axios.post(
+     `${import.meta.env.VITE_BACKEND}/api/v1/send`,
+     {
+       message: data.message,
+       channelId: data.channel,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ` + loggedInUser?.token,
+          "Content-Type": "application/json",
+        },
+      }
+      ),
+      
+      onSuccess: (data) => {
+        // messageContext?.setMessages?.({
+        //   ...messageContext?.messages,
+        //   channel: data?.data?.channel,
+        // });
+        queryClient.invalidateQueries(['channel'])
+      }
+      
+    })
+    
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+     
+      messageMutation.mutate({
+        message,
+        channel: messageContext?.messages?.channel?._id,
+      });
+  
+      setMessage("");
+    };
   return (
     <div className="px-10 py-5 bg-[#120F13] ">
       <form onSubmit={handleSubmit}>

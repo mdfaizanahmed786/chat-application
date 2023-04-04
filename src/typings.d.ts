@@ -61,6 +61,7 @@ interface Channel  {
     email: string;
   }[];
   updatedAt?: string;
+    messages:ArrayOfmessages[];
 };
 
 interface Channels{

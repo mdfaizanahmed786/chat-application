@@ -87,7 +87,7 @@ const Channels = ({ debounced }: Props) => {
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["channel", debounced],
     queryFn: () => fetchChannels(debounced),
-    refetchOnWindowFocus: false,
+
   });
 
   // Query to get single channel
@@ -142,6 +142,7 @@ const Channels = ({ debounced }: Props) => {
   const joinChannel = useMutation({
     mutationFn: handleJoinChannel,
     onSuccess: () => queryClient.invalidateQueries(["channel"]),
+    
   });
 
   // loading state
@@ -170,6 +171,8 @@ const Channels = ({ debounced }: Props) => {
     );
   }
 
+ 
+
   return (
     <div className="py-4  cursor-pointer">
       {data.map((channel: Channel) => (
@@ -192,7 +195,9 @@ const Channels = ({ debounced }: Props) => {
             </div>
             <div className="ml-3">
               <h1 className="text-white font-semibold">{channel.name}</h1>
-              <p className="text-gray-400 text-sm">Last message</p>
+            {channel.users.filter(
+                (channelUser) => channelUser._id === user?.user
+              ).length !== 0 &&  <p className="text-gray-400 text-sm">{channel?.messages?.at(-1)?.message}</p>}
             </div>
           </div>
           <div className="flex-1"></div>
