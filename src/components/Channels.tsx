@@ -197,7 +197,7 @@ const Channels = ({ debounced }: Props) => {
               <h1 className="text-white font-semibold">{channel.name}</h1>
             {channel.users.filter(
                 (channelUser) => channelUser._id === user?.user
-              ).length !== 0 &&  <p className="text-gray-400 text-sm">{channel?.messages?.at(-1)?.message}</p>}
+              ).length !== 0 &&  <p className="text-gray-400 text-sm truncate w-48">{channel?.messages?.at(-1)?.message}</p>}
             </div>
           </div>
           <div className="flex-1"></div>
