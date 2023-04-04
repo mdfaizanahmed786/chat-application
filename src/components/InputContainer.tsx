@@ -52,10 +52,7 @@ const InputContainer = (props: Props) => {
       ),
       
       onSuccess: (data) => {
-        // messageContext?.setMessages?.({
-        //   ...messageContext?.messages,
-        //   channel: data?.data?.channel,
-        // });
+       
         queryClient.invalidateQueries(['channel'])
       }
       
