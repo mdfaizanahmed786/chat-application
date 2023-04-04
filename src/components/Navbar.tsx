@@ -1,12 +1,52 @@
 import { useContext } from "react";
 import { MessagesContext } from "../context/messagesContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { Toaster, toast } from "react-hot-toast";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
   const messageContext = useContext<MessageContext | null>(MessagesContext);
+  const user = JSON.parse(localStorage.getItem("token") as string);
+  const channelId = localStorage.getItem("channelId");
+  const queryClient = useQueryClient();
 
   const channelMembers = messageContext?.messages?.channel?.users;
+
+  const handleLeaveChannel = async () => {
+    if (channelId) {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND}/api/v1/leaveChannel/${channelId}`,
+        {
+          userId: user?.user,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ` + user?.token,
+          },
+        }
+      );
+
+      if (data?.success) {
+        toast.success("Removed from channel!", {
+          style: {
+            borderRadius: "6px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+      }
+
+      return data;
+    }
+
+    return {};
+  };
+  const leaveMutate = useMutation({
+    mutationFn: handleLeaveChannel,
+    onSuccess: () => {queryClient.invalidateQueries(["channel"])},
+  });
 
   return (
     <>
@@ -50,12 +90,12 @@ const Navbar = (props: Props) => {
                   d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
                 />
               </svg>
-            </label> 
+            </label>
             <ul
               tabIndex={0}
-              className="dropdown-content menu p-2 shadow  w-52 bg-[#2a282c] rounded-md"
+              className="dropdown-content menu p-2 shadow w-52 bg-[#2a282c] rounded-md"
             >
-              <li>
+              <li onClick={() => leaveMutate.mutate()}>
                 <a className="text-red-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -77,6 +117,7 @@ const Navbar = (props: Props) => {
             </ul>
           </div>
         </div>
+        <Toaster position="top-right" reverseOrder={false} />
       </div>
     </>
   );

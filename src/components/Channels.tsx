@@ -42,10 +42,8 @@ const Channels = ({ debounced }: Props) => {
       }
     );
 
- 
-
     if (data) {
-    
+      localStorage.setItem("channelId", messageContext?.channelId!);
       messageContext?.setMessages?.({
         ...messageContext?.messages,
         channel: data,
@@ -87,20 +85,21 @@ const Channels = ({ debounced }: Props) => {
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["channel", debounced],
     queryFn: () => fetchChannels(debounced),
-
   });
 
   // Query to get single channel
   const { data: singleChannel } = useQuery({
-    queryKey: ["channel"],
+    queryKey: ["channel", messageContext?.channelId],
     queryFn: () => fetchSingleChannel(messageContext?.channelId),
-    onSuccess:(data)=>{messageContext?.setChannelId("");  messageContext?.setMessages?.({
-      ...messageContext?.messages,
-      channel: data,
-    });
-   
-  },
-   
+    onSuccess: (data) => {
+      messageContext?.setMessages?.({
+        ...messageContext?.messages,
+        channel: data,
+      });
+
+     
+    },
+
     enabled: !!messageContext?.channelId,
   });
 
@@ -142,7 +141,6 @@ const Channels = ({ debounced }: Props) => {
   const joinChannel = useMutation({
     mutationFn: handleJoinChannel,
     onSuccess: () => queryClient.invalidateQueries(["channel"]),
-    
   });
 
   // loading state
@@ -171,8 +169,6 @@ const Channels = ({ debounced }: Props) => {
     );
   }
 
- 
-
   return (
     <div className="py-4  cursor-pointer">
       {data.map((channel: Channel) => (
@@ -181,11 +177,9 @@ const Channels = ({ debounced }: Props) => {
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"
           onClick={() => {
             messageContext?.setChannelId(channel._id);
-           
-          
           }}
         >
-          <div className="flex items-center"  >
+          <div className="flex items-center">
             <div className="avatar">
               <div className="w-9 rounded-full">
                 <img
@@ -195,9 +189,13 @@ const Channels = ({ debounced }: Props) => {
             </div>
             <div className="ml-3">
               <h1 className="text-white font-semibold">{channel.name}</h1>
-            {channel.users.filter(
+              {channel.users.filter(
                 (channelUser) => channelUser._id === user?.user
-              ).length !== 0 &&  <p className="text-gray-400 text-sm truncate w-48">{channel?.messages?.at(-1)?.message}</p>}
+              ).length !== 0 && (
+                <p className="text-gray-400 text-sm truncate w-48">
+                  {channel?.messages?.at(-1)?.message}
+                </p>
+              )}
             </div>
           </div>
           <div className="flex-1"></div>
