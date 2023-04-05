@@ -7,7 +7,7 @@ type Props = {};
 
 const Chat = (props: Props) => {
   return (
-    <div className="min-w-[78%]  flex flex-col h-screen ">
+    <div className="min-w-[78%] bg-[#252329]  flex flex-col h-screen ">
       <Navbar />
 
       <MessagesContainer />

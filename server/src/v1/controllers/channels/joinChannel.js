@@ -9,7 +9,7 @@ const joinChannel = async (req, res) => {
     if (channel) {
       // if channel exists, then find user by id
       const user = await User.findById(req.user._id);
-      const userObj = user.toObject();
+      const userObj = JSON.parse(JSON.stringify(user));
       delete userObj.password;
       delete userObj.__v;
       delete userObj.createdAt;

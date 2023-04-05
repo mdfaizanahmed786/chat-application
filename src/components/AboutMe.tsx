@@ -42,13 +42,13 @@ const AboutMe = (props: Props) => {
           className="dropdown-content menu   p-2 shadow bg-[#3C393F] rounded-md w-52"
         >
           <li>
-            <Link to={`/user/${user?.user}`}>
-              <a>Profile</a>
+            <Link to={`/user/${user?.user}`} className="active:bg-gray-700 active:text-white">
+              <a className="active:bg-gray-700 active:text-white">Profile</a>
             </Link>
           </li>
 
           <li onClick={handleLogout}>
-            <a className="text-red-500">
+            <a className="text-red-500 active:bg-red-500 active:text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

@@ -8,7 +8,7 @@ const Messages = (props: Props) => {
   const loggedInUser = JSON.parse(localStorage.getItem("token") as string);
   const messageContext = useContext<MessageContext | null>(MessagesContext);
   const joinedUsers = messageContext?.messages?.channel?.users;
- 
+
   
  
   return (
@@ -51,10 +51,19 @@ const Messages = (props: Props) => {
         
         </div>
       )   : (
+       
 
-        <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex flex-col items-center justify-center h-full gap-6">
+          <img src="/empty.svg" className="w-52" />
           <p className="font-semibold text-lg">Join the channel to start conversation!</p>
           </div>
+      )}
+
+      {!messageContext?.messages?.channel?.name && (
+        <div className="flex flex-col items-center justify-center h-full gap-6">
+        <img src="/nochat.svg" className="w-52" />
+        <p className="font-semibold text-lg">Select a channel to begin!</p>
+        </div>
       )}
     </div>
   );

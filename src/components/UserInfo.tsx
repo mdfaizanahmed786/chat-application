@@ -39,7 +39,7 @@ const UserInfo = (props: Props) => {
 
 
 
-  return <div className="h-screen flex justify-center items-center">
+  return <div className="h-screen flex justify-center items-center bg-[#252329]">
     <div className="bg-[#110E12] max-w-2xl shadow-md overflow-hidden sm:rounded-lg">
     <div className="px-4 py-5 sm:px-6">
        

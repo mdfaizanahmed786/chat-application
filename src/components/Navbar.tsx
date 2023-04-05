@@ -13,6 +13,8 @@ const Navbar = (props: Props) => {
   const queryClient = useQueryClient();
 
   const channelMembers = messageContext?.messages?.channel?.users;
+  const isMember=channelMembers?.filter((member)=>member?._id===user?.user)
+
 
   const handleLeaveChannel = async () => {
     if (channelId) {
@@ -50,8 +52,8 @@ const Navbar = (props: Props) => {
 
   return (
     <>
-      <div className="flex w-full px-5 bg-[#252329] items-center">
-        <div className="h-[72px] w-full bg-[#252329] drop-shadow-lg px-10 flex-1   justify-center  sticky top-0 flex flex-col">
+      <div className="flex w-full px-5 bg-[#252329] items-center drop-shadow-lg">
+        <div className="h-[72px] w-full bg-[#252329]  px-10 flex-1   justify-center  sticky top-0 flex flex-col">
           <div className="flex  items-center gap-3">
             {messageContext?.messages?.channel?.name && (
               <img
@@ -62,18 +64,18 @@ const Navbar = (props: Props) => {
             <p className="font-bold text-lg text-white">
               {messageContext?.messages?.channel?.name
                 ? messageContext?.messages?.channel?.name
-                : "Select or join a channel to chat!"}
+                : "Welcome to ChatApp!"}
             </p>
           </div>
-          <div className="flex px-12 gap-3  items-center">
+         {isMember?.length!==0 && <div className="flex px-12 gap-3  items-center">
             {channelMembers?.map((member) => (
               <p className="text-xs" key={member?._id}>
-                {member?.name}
+                {member?.name===user?.name? "You":member?.name}
               </p>
             ))}
-          </div>
+          </div>}
         </div>
-        <div className="cursor-pointer">
+       {(isMember?.length!==0 && messageContext?.messages?.channel?.name )&& <div className="cursor-pointer">
           <div className="dropdown dropdown-end ">
             <label tabIndex={0} className="m-1 cursor-pointer">
               <svg
@@ -96,7 +98,7 @@ const Navbar = (props: Props) => {
               className="dropdown-content menu p-2 shadow w-52 bg-[#2a282c] rounded-md"
             >
               <li onClick={() => leaveMutate.mutate()}>
-                <a className="text-red-500">
+                <a className="text-red-500 active:bg-red-500 active:text-white">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -116,7 +118,7 @@ const Navbar = (props: Props) => {
               </li>
             </ul>
           </div>
-        </div>
+        </div> }
         <Toaster position="top-right" reverseOrder={false} />
       </div>
     </>

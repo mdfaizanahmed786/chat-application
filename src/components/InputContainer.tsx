@@ -73,12 +73,12 @@ const InputContainer = (props: Props) => {
   return (
     <div className="px-10 py-5 bg-[#120F13] ">
       <form onSubmit={handleSubmit}>
-        <div className="flex  py-2 bg-[#3C393F] shadow-md rounded-md">
+        <div className="flex  py-2 bg-[#3C393F] shadow-md rounded-md"> 
           <input
             type="text"
             name="chat"
             placeholder="Type a message here"
-            className="outline-none border-none flex-1 px-4"
+            className="outline-none border-none flex-1 px-4 disabled:cursor-not-allowed disabled:opacity-50"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             disabled={joinedUser?.length === 0}
