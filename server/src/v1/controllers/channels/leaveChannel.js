@@ -19,9 +19,13 @@ const leaveChannel = async (req, res) => {
     const users = JSON.parse(JSON.stringify(channel.users));
     const removeUser = users.filter((user) => user._id !== req.body.userId);
 
-    console.log(removeUser);
+   
     channel.users = removeUser;
     await channel.save();
+    const filteredUsers=JSON.parse(JSON.stringify(user.channels));
+    const removeChannel= filteredUsers.filter((channel) => channel._id !== req.params.channelId);
+    user.channels = removeChannel;
+    await user.save();
 
     return res.status(200).json({ success: true });
   } catch (err) {
