@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 type Props = {};
 
 const InputContainer = (props: Props) => {
-  const messageContext = useContext<MessageContext | null>(GlobalContext);
+  const messageContext = useContext<GlobalContext | null>(GlobalContext);
   const queryClient = useQueryClient();
   const loggedInUser = JSON.parse(localStorage.getItem("token") as string);
   const joinedUser = messageContext?.messages?.channel?.users?.filter(

@@ -15,7 +15,7 @@ const Channels = ({ debounced }: Props) => {
   const [channelId, setChannelId] = useState("");
   const [channelDescription, setChannelDescription] = useState<string>("");
   const user = JSON.parse(localStorage.getItem("token") as string);
-  const messageContext = useContext<MessageContext | null>(GlobalContext);
+  const messageContext = useContext<GlobalContext | null>(GlobalContext);
 
   const fetchChannels = async (search: string) => {
     const { data } = await axios.get(

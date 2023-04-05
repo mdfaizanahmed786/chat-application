@@ -6,7 +6,7 @@ type Props = {};
 const Messages = (props: Props) => {
   const colorArray = ["#3C393F", "#120F13"];
   const loggedInUser = JSON.parse(localStorage.getItem("token") as string);
-  const messageContext = useContext<MessageContext | null>(GlobalContext);
+  const messageContext = useContext<GlobalContext | null>(GlobalContext);
   const joinedUsers = messageContext?.messages?.channel?.users;
 
   return (
