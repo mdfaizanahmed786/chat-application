@@ -7,12 +7,12 @@ import { Toaster, toast } from "react-hot-toast";
 type Props = {};
 
 const Navbar = (props: Props) => {
-  const messageContext = useContext<MessageContext | null>(GlobalContext);
+  const globalContext = useContext<GlobalContext | null>(GlobalContext);
   const user = JSON.parse(localStorage.getItem("token") as string);
   const channelId = localStorage.getItem("channelId");
   const queryClient = useQueryClient();
 
-  const channelMembers = messageContext?.messages?.channel?.users;
+  const channelMembers = globalContext?.messages?.channel?.users;
   const isMember = channelMembers?.filter(
     (member) => member?._id === user?.user
   );
@@ -53,10 +53,15 @@ const Navbar = (props: Props) => {
     },
   });
 
+  const openNav = () => {
+  globalContext?.navRef?.current?.classList.add("min-w-[100%]");
+
+  }
+
   return (
     <>
       <div className="flex w-full px-5 bg-[#252329] items-center drop-shadow-lg">
-        <div className="md:hidden ">
+        <div className="md:hidden " onClick={openNav}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -74,15 +79,15 @@ const Navbar = (props: Props) => {
         </div>
         <div className="h-[72px] w-full bg-[#252329]  md:px-10 flex-1   justify-center  sticky top-0 flex flex-col">
           <div className="flex  items-center gap-3">
-            {messageContext?.messages?.channel?.name && (
+            {globalContext?.messages?.channel?.name && (
               <img
-                src={`https://ui-avatars.com/api/?background=random&size=128&rounded=true&format=png&name=${messageContext?.messages?.channel?.name}`}
+                src={`https://ui-avatars.com/api/?background=random&size=128&rounded=true&format=png&name=${globalContext?.messages?.channel?.name}`}
                 className="h-9 w-9 "
               />
             )}
             <p className="font-bold text-lg text-white text-center md:text-left w-full">
-              {messageContext?.messages?.channel?.name
-                ? messageContext?.messages?.channel?.name
+              {globalContext?.messages?.channel?.name
+                ? globalContext?.messages?.channel?.name
                 : "Welcome to ChatApp!"}
             </p>
           </div>
@@ -96,7 +101,7 @@ const Navbar = (props: Props) => {
             </div>
           )}
         </div>
-        {isMember?.length !== 0 && messageContext?.messages?.channel?.name && (
+        {isMember?.length !== 0 && globalContext?.messages?.channel?.name && (
           <div className="cursor-pointer">
             <div className="dropdown dropdown-end ">
               <label tabIndex={0} className="m-1 cursor-pointer">

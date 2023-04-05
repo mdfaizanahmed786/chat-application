@@ -37,11 +37,12 @@ interface ChannelState {
 
 
 
-type MessageContext = {
+type GlobalContext = {
   messages: ChannelState;
   setMessages:Dispatch<SetStateAction<{ message: string; }[]>>
   channelId:string;
   setChannelId:Dispatch<SetStateAction<string>>
+  navRef:RefObject<NavigationContainerRef>
 };
 
 interface PusherMessage  {

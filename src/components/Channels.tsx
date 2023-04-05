@@ -190,7 +190,7 @@ const Channels = ({ debounced }: Props) => {
               {channel.users.filter(
                 (channelUser) => channelUser._id === user?.user
               ).length !== 0 && (
-                <p className="text-gray-400 text-sm truncate w-48">
+                <p className="text-gray-400 text-sm truncate md:w-48">
                   {channel?.messages?.at(-1)?.message}
                 </p>
               )}
