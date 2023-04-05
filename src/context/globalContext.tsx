@@ -1,18 +1,19 @@
 import React, { createContext, useState } from "react";
 
-const MessagesContext = createContext<MessageContext | null>(null);
+const GlobalContext = createContext<MessageContext | null>(null);
 
-const MessagesProvider = ({ children }: { children: React.ReactNode }) => {
+const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const [messages, setMessages] = useState({} as ChannelState
    );
   const [channelId, setChannelId] = useState("");
   return (
-    <MessagesContext.Provider
+    <GlobalContext.Provider
       value={{ messages, setMessages, channelId, setChannelId }}
     >
       {children}
-    </MessagesContext.Provider>
+    </GlobalContext.Provider>
   );
 };
 
-export { MessagesContext, MessagesProvider };
+export { GlobalContext, GlobalProvider };
+

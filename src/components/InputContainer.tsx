@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import Pusher from "pusher-js";
 import axios from "axios";
-import { MessagesContext } from "../context/messagesContext";
+import { GlobalContext } from "../context/globalContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type Props = {};
 
 const InputContainer = (props: Props) => {
-  const messageContext = useContext<MessageContext | null>(MessagesContext);
+  const messageContext = useContext<MessageContext | null>(GlobalContext);
   const queryClient = useQueryClient();
   const loggedInUser = JSON.parse(localStorage.getItem("token") as string);
   const joinedUser = messageContext?.messages?.channel?.users?.filter(
@@ -16,7 +16,6 @@ const InputContainer = (props: Props) => {
 
   const [message, setMessage] = useState("");
 
-  
   useEffect(() => {
     const pusher = new Pusher(import.meta.env.VITE_PUSHER_API_KEY, {
       cluster: "mt1",
@@ -35,45 +34,47 @@ const InputContainer = (props: Props) => {
     };
   }, []);
 
- const messageMutation=useMutation({
-   mutationFn: (data: { message: string; channel: string | undefined,name:string|undefined }) =>
-   axios.post(
-     `${import.meta.env.VITE_BACKEND}/api/v1/send`,
-     {
-       message: data.message,
-       channelId: data.channel,
-        name:data.name
-      },
-      {
-        headers: {
-          Authorization: `Bearer ` + loggedInUser?.token,
-          "Content-Type": "application/json",
+  const messageMutation = useMutation({
+    mutationFn: (data: {
+      message: string;
+      channel: string | undefined;
+      name: string | undefined;
+    }) =>
+      axios.post(
+        `${import.meta.env.VITE_BACKEND}/api/v1/send`,
+        {
+          message: data.message,
+          channelId: data.channel,
+          name: data.name,
         },
-      }
+        {
+          headers: {
+            Authorization: `Bearer ` + loggedInUser?.token,
+            "Content-Type": "application/json",
+          },
+        }
       ),
-      
-      onSuccess: (data) => {
-       
-        queryClient.invalidateQueries(['channel'])
-      }
-      
-    })
-    
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-     
-      messageMutation.mutate({
-        message,
-        channel: messageContext?.messages?.channel?._id,
-        name:loggedInUser?.name
-      });
-  
-      setMessage("");
-    };
+
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["channel"]);
+    },
+  });
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    messageMutation.mutate({
+      message,
+      channel: messageContext?.messages?.channel?._id,
+      name: loggedInUser?.name,
+    });
+
+    setMessage("");
+  };
   return (
-    <div className="px-10 py-5 bg-[#120F13] ">
+    <div className="md:px-10 px-4 md:py-5 py-3 bg-[#120F13] ">
       <form onSubmit={handleSubmit}>
-        <div className="flex  py-2 bg-[#3C393F] shadow-md rounded-md"> 
+        <div className="flex  py-2 bg-[#3C393F] shadow-md rounded-md">
           <input
             type="text"
             name="chat"
@@ -81,7 +82,10 @@ const InputContainer = (props: Props) => {
             className="outline-none border-none flex-1 px-4 disabled:cursor-not-allowed disabled:opacity-50"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            disabled={joinedUser?.length === 0}
+            disabled={
+              joinedUser?.length === 0 ||
+              !messageContext?.messages?.channel?.name
+            }
           />
           <button
             disabled={!message}

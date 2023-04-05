@@ -3,7 +3,7 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
-import { MessagesContext } from "../context/messagesContext";
+import { GlobalContext } from "../context/globalContext";
 
 type Props = {
   debounced: string;
@@ -15,7 +15,7 @@ const Channels = ({ debounced }: Props) => {
   const [channelId, setChannelId] = useState("");
   const [channelDescription, setChannelDescription] = useState<string>("");
   const user = JSON.parse(localStorage.getItem("token") as string);
-  const messageContext = useContext<MessageContext | null>(MessagesContext);
+  const messageContext = useContext<MessageContext | null>(GlobalContext);
 
   const fetchChannels = async (search: string) => {
     const { data } = await axios.get(
@@ -96,8 +96,6 @@ const Channels = ({ debounced }: Props) => {
         ...messageContext?.messages,
         channel: data,
       });
-
-     
     },
 
     enabled: !!messageContext?.channelId,
