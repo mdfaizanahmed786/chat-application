@@ -62,10 +62,10 @@ const Login = (props: Props) => {
   };
 
   return (
-    <>
-      <div className="bg-gradient-to-r h-screen flex justify-center items-center from-[#2A303C] to-[#0B090C]">
-        <section className="w-full">
-          <div className="flex flex-col  items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+   
+      <div className="bg-gradient-to-r min-h-screen flex flex-col justify-center items-center from-[#2A303C] to-[#0B090C]">
+        <div className="w-full">
+          <div className="flex flex-col  items-center justify-center px-6  mx-auto  lg:py-0">
             <div className="w-full bg-white rounded-lg shadow-xl ring-1 ring-white/40 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-[#120F13] dark:border-[#120F13] ">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-xl text-center py-2 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -128,10 +128,18 @@ const Login = (props: Props) => {
               </div>
             </div>
           </div>
-        </section>
+        </div>
+        <div className="flex flex-col gap-2 mt-14">
+        <p>Developed by Mohammed Faizan ahmed</p>
+        <div className="flex gap-4 w-full justify-center">
+       <a href="https://www.linkedin.com/in/faizan-ahmed-4ab0a522a/" className="bg-transparent"><img src="/linkedin.svg" className="h-9 w-9" alt="linkedin"/></a>
+       <a href="https://github.com/mdfaizanahmed786" className="bg-transparent"><img src="/github.svg" className="h-9 w-9" alt="github"/></a>
+       <a href="https://www.instagram.com/ahmed_faizan_7860/" className="bg-transparent"><img src="/instagram.svg" className="h-9 w-9" alt="instagram"/></a>
+        </div>
+        </div>
         <Toaster position="top-center" reverseOrder={false} />
       </div>
-    </>
+   
   );
 };
 
