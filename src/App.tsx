@@ -1,6 +1,6 @@
 import Chat from "./components/Chat";
 import Sidebar from "./components/Sidebar";
-import { MessagesProvider } from "./context/globalContext";
+import { GlobalProvider } from "./context/globalContext";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useEffect, useState } from "react";
@@ -27,11 +27,11 @@ function App(location: Props) {
       />
 
       <div className="flex max-w-full overflow-hidden">
-        <MessagesProvider>
+        <GlobalProvider>
           <Sidebar />
 
           <Chat />
-        </MessagesProvider>
+        </GlobalProvider>
       </div>
     </>
   );
