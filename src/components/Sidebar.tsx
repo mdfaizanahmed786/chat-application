@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import AboutMe from "./AboutMe";
 import AddChannel from "./AddChannel";
-import ManageChatMembers from "./ManageChatMembers";
+import ManageChatMembers from "./SearchChannel";
 import { GlobalContext } from "../context/globalContext";
 
 type Props = {};

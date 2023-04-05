@@ -1,7 +1,6 @@
-import React from "react";
-import Navbar from "./Navbar";
-import MessagesContainer from "./MessagesContainer";
 import InputContainer from "./InputContainer";
+import MessagesContainer from "./MessagesContainer";
+import Navbar from "./Navbar";
 
 type Props = {};
 

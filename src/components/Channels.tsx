@@ -15,7 +15,7 @@ const Channels = ({ debounced }: Props) => {
   const [channelId, setChannelId] = useState("");
   const [channelDescription, setChannelDescription] = useState<string>("");
   const user = JSON.parse(localStorage.getItem("token") as string);
-  const messageContext = useContext<GlobalContext | null>(GlobalContext);
+  const globalContext = useContext<GlobalContext | null>(GlobalContext);
 
   const fetchChannels = async (search: string) => {
     const { data } = await axios.get(
@@ -43,9 +43,9 @@ const Channels = ({ debounced }: Props) => {
     );
 
     if (data) {
-      localStorage.setItem("channelId", messageContext?.channelId!);
-      messageContext?.setMessages?.({
-        ...messageContext?.messages,
+      localStorage.setItem("channelId", globalContext?.channelId!);
+      globalContext?.setMessages?.({
+        ...globalContext?.messages,
         channel: data,
       });
     }
@@ -89,16 +89,16 @@ const Channels = ({ debounced }: Props) => {
 
   // Query to get single channel
   const { data: singleChannel } = useQuery({
-    queryKey: ["channel", messageContext?.channelId],
-    queryFn: () => fetchSingleChannel(messageContext?.channelId),
+    queryKey: ["channel", globalContext?.channelId],
+    queryFn: () => fetchSingleChannel(globalContext?.channelId),
     onSuccess: (data) => {
-      messageContext?.setMessages?.({
-        ...messageContext?.messages,
+      globalContext?.setMessages?.({
+        ...globalContext?.messages,
         channel: data,
       });
     },
 
-    enabled: !!messageContext?.channelId,
+    enabled: !!globalContext?.channelId,
   });
 
   // Mutation to create channel
@@ -174,7 +174,8 @@ const Channels = ({ debounced }: Props) => {
           key={channel._id}
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"
           onClick={() => {
-            messageContext?.setChannelId(channel._id);
+            globalContext?.setChannelId(channel._id);
+            globalContext?.navRef?.current?.classList.remove("min-w-[100%]");
           }}
         >
           <div className="flex items-center">

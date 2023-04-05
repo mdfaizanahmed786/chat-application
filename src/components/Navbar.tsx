@@ -61,7 +61,7 @@ const Navbar = (props: Props) => {
   return (
     <>
       <div className="flex w-full px-5 bg-[#252329] items-center drop-shadow-lg">
-        <div className="md:hidden " onClick={openNav}>
+        <div className="md:hidden mr-5" onClick={openNav}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -78,14 +78,17 @@ const Navbar = (props: Props) => {
           </svg>
         </div>
         <div className="h-[72px] w-full bg-[#252329]  md:px-10 flex-1   justify-center  sticky top-0 flex flex-col">
-          <div className="flex  items-center gap-3">
+          <div className="flex items-center gap-3">
+
+
+
             {globalContext?.messages?.channel?.name && (
               <img
                 src={`https://ui-avatars.com/api/?background=random&size=128&rounded=true&format=png&name=${globalContext?.messages?.channel?.name}`}
-                className="h-9 w-9 "
+                className="h-9 w-9 mt-1"
               />
             )}
-            <p className="font-bold text-lg text-white text-center md:text-left w-full">
+            <p className="font-bold text-lg text-white  md:text-left w-full">
               {globalContext?.messages?.channel?.name
                 ? globalContext?.messages?.channel?.name
                 : "Welcome to ChatApp!"}

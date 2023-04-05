@@ -20,11 +20,11 @@ const Messages = (props: Props) => {
                 key={message._id}
                 className={`flex gap-4 w-full bg-[${
                   colorArray[i % colorArray.length]
-                }] px-24 py-10 justify-center   items-center `}
+                }] md:px-24 px-5 py-10 justify-center   items-center `}
               >
                 <div>
                   <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_C7SruCkVSu5AxowynH7TAApdKNH7TD1SLR8tBS5bpQ&usqp=CAU&ec=48665701"
+                    src={`https://ui-avatars.com/api/?background=random&size=128&rounded=true&format=png&name=${message?.user?.name}`}
                     className="w-10 h-10 rounded-full object-cover"
                   />
                 </div>

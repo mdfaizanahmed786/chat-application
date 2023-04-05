@@ -2,7 +2,6 @@ import Chat from "./components/Chat";
 import Sidebar from "./components/Sidebar";
 import { GlobalProvider } from "./context/globalContext";
 
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useEffect, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
 
