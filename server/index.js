@@ -6,12 +6,12 @@ const morgan=require('morgan');
 const cors=require('cors');
 const PORT=5000 || process.env.PORT
 const app=express();
-const mongoose=require('mongoose');
-const Channel = require('./src/v1/models/Channel');
+const mongoose=require('mongoose');;
+
 
 // defining all middleware
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(morgan());
 app.use(cors());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
@@ -22,6 +22,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use('/api/v1',require('./src/v1/routes/channelRoutes'));
 app.use('/api/v1',require('./src/v1/routes/userRoutes'));
 app.use('/api/v1',require('./src/v1/routes/sendMessage'));
+app.use('/api/v1', require('./src/v1/routes/uploadImage'));
 
 
 
@@ -36,3 +37,5 @@ mongoose
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
   })
   .catch((error) => console.log(`${error} did not connect`));
+
+  
