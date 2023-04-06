@@ -27,11 +27,14 @@ const uploadImage = async (req, res) => {
     };
     const snapshot = await uploadBytes(storageRef, file.buffer, metaData);
     const downloadURL = await getDownloadURL(snapshot.ref);
+    if(!downloadURL){
+        return res.status(400).json({success:false,message: "File upload failed"})
+    }
     res
       .status(200)
       .json({ success: true, downloadURL, name: file.originalname });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message, success:false });
   }
 };
 

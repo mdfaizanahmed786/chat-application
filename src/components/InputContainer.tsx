@@ -3,6 +3,7 @@ import Pusher from "pusher-js";
 import axios from "axios";
 import { GlobalContext } from "../context/globalContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Toaster, toast } from "react-hot-toast";
 
 type Props = {};
 
@@ -15,9 +16,13 @@ const InputContainer = (props: Props) => {
   );
   const imageRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<FileList[0] | null>();
-  const [image, setImage] = useState();
+  const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState("");
+  const [open, setOpen] = useState(false);
 
   const [message, setMessage] = useState("");
+
+
 
   useEffect(() => {
     const pusher = new Pusher(import.meta.env.VITE_PUSHER_API_KEY, {
@@ -74,13 +79,75 @@ const InputContainer = (props: Props) => {
 
     setMessage("");
   };
+
+  const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      if (e.target.files[0].size > 1000000) {
+        toast.error("File size is too large");
+
+        return;
+      }
+      setFiles(e.target.files[0]);
+
+      setImage(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
+  const uploadImage = async () => {
+    if (files?.name) {
+      let formData = new FormData();
+      formData.append("file", files);
+      try {
+        setLoading(true);
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_BACKEND}/api/v1/uploadImage`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ` + loggedInUser?.token,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        if (data?.success) {
+
+          messageMutation.mutate({
+            message: data?.downloadURL,
+            channel: messageContext?.messages?.channel?._id,
+            name: loggedInUser?.name,
+          });
+          setImage("");
+          setLoading(false);
+          setOpen(false)
+          toast.success("Image uploaded successfully")
+          
+        } else {
+          toast.error("Something unexpected happened, please try again");
+          setLoading(false);
+        }
+      } catch (err) {
+        toast.error("Something unexpected happened, please try again");
+      }
+    }
+  };
+
+  const imageMutation = useMutation({
+    mutationFn: uploadImage,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["channel"]);
+    },
+  });
+
   return (
     <div className="md:px-8 px-2 md:py-5 py-3 bg-[#120F13] ">
-      <form onSubmit={handleSubmit} className="flex items-center gap-2 md:gap-6">
+      <form
+        onSubmit={handleSubmit}
+        className="flex items-center gap-2 md:gap-6"
+      >
         {joinedUser?.length !== 0 &&
           messageContext?.messages?.channel?.name && (
             <div className="cursor-pointer ">
-              <label htmlFor="my-modal-3" className="cursor-pointer">
+              <label htmlFor="my-modal-3" className="cursor-pointer" onClick={()=>setOpen(true)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -103,6 +170,7 @@ const InputContainer = (props: Props) => {
           hidden
           ref={imageRef}
           accept="image/jpg, image/png"
+          onChange={handleImage}
           name="file"
         />
 
@@ -143,22 +211,42 @@ const InputContainer = (props: Props) => {
           </button>
         </div>
       </form>
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <input type="checkbox" checked={open} id="my-modal-3" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box relative bg-[#120F13]">
           <label
+        
             htmlFor="my-modal-3"
+            onClick={()=>setOpen(false)}
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕
           </label>
           <h3 className=" font-bold mb-6 text-sm md:text-lg text-center">
-          Upload Image (less than 1MB)
+            Upload Image (less than 1MB)
           </h3>
-        <div className="ring-1 ring-gray-700 rounded-md h-44 flex justify-center items-center w-full" onClick={()=>imageRef?.current?.click()}>
-Click here to upload image
-        </div>
-
+          <div
+            className="ring-1 ring-gray-700 rounded-md h-44 flex justify-center items-center w-full"
+            onClick={() => imageRef?.current?.click()}
+          >
+            Click here to upload image
+          </div>
+          <div className="space-y-4">
+            <p className="text-lg font-bold text-left mt-5">Preview</p>
+            {image && (
+              <img
+                src={image}
+                className="md:h-36 md:w-36 h-24 w-24 rounded-md"
+              />
+            )}
+            <button
+              className="bg-[#2D9CDB] active:bg-blue-500 text-white py-2 rounded-md w-full disabled:cursor-not-allowed disabled:bg-gray-400"
+              disabled={!image|| loading}
+              onClick={()=>imageMutation.mutate()}
+            >
+            {loading ? "Uploading..." : "Upload"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

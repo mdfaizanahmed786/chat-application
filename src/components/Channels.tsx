@@ -85,6 +85,7 @@ const Channels = ({ debounced }: Props) => {
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["channel", debounced],
     queryFn: () => fetchChannels(debounced),
+   
   });
 
   // Query to get single channel
@@ -192,7 +193,8 @@ const Channels = ({ debounced }: Props) => {
                 (channelUser) => channelUser._id === user?.user
               ).length !== 0 && (
                 <p className="text-gray-400 text-sm truncate w-52 md:w-48">
-                  {channel?.messages?.at(-1)?.message}
+                  {channel?.messages?.at(-1)?.message.includes(import.meta.env.VITE_FIREBASE_URL) ? "Image 🖼️" : channel?.messages?.at(-1)?.message}
+                
                 </p>
               )}
             </div>

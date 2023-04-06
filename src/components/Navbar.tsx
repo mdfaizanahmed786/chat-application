@@ -77,7 +77,7 @@ const Navbar = (props: Props) => {
             />
           </svg>
         </div>
-        <div className="h-[72px] w-full bg-[#252329]  md:px-10 flex-1   justify-center  sticky top-0 flex flex-col">
+        <div className="h-[74px] w-full bg-[#252329]  md:px-10 flex-1   justify-center  sticky top-0 flex flex-col">
           <div className="flex items-center gap-3">
 
 
@@ -95,9 +95,9 @@ const Navbar = (props: Props) => {
             </p>
           </div>
           {isMember?.length !== 0 && (
-            <div className="flex px-12 gap-3  items-center">
+            <div className="flex px-12  gap-3  items-center">
               {channelMembers?.map((member) => (
-                <p className="text-xs" key={member?._id}>
+                <p className="text-sm" key={member?._id}>
                   {member?.name === user?.name ? "You" : member?.name}
                 </p>
               ))}

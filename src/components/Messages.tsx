@@ -38,7 +38,12 @@ const Messages = (props: Props) => {
                     </p>
                   </div>
                   <div>
-                    <p>{message.message}</p>
+               {   message.message.includes(import.meta.env.VITE_FIREBASE_URL) ? (
+                    <img src={message.message} className="w-52 rounded-md shadow-md" />
+               ) : (
+                    <p className="text-white text-lg">{message.message}</p>
+               ) }
+                   
                   </div>
                 </div>
               </div>
