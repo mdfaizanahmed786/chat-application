@@ -119,10 +119,22 @@ const InputContainer = (props: Props) => {
           setImage("");
           setLoading(false);
           setOpen(false)
-          toast.success("Image uploaded successfully")
+          toast.success("Image uploaded successfully", {
+            style: {
+              borderRadius: "6px",
+              background: "#333",
+              color: "#fff",
+            },
+          })
           
         } else {
-          toast.error("Something unexpected happened, please try again");
+          toast.error("Something unexpected happened, please try again",  {
+            style: {
+              borderRadius: "6px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
           setLoading(false);
         }
       } catch (err) {
