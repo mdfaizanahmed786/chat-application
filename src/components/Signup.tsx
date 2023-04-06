@@ -9,15 +9,15 @@ const Signup = (props: Props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-const location=useLocation();
-useEffect(()=>{
-const user=JSON.parse(localStorage.getItem("token") as string);
-if(user){
-  location.pathname="/"
-  window.location.replace("/")
-}
-
-},[location.pathname])
+  const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("token") as string);
+    if (user) {
+      location.pathname = "/";
+      window.location.replace("/");
+    }
+  }, [location.pathname]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,16 +32,18 @@ if(user){
         });
         return;
       }
-
+      setLoading(true);
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND}/api/v1/auth/register`,
         {
           email,
           password,
-          name
+          name,
         }
       );
+
       if (data?.success) {
+        setLoading(false);
         toast.success("Signup successful!", {
           style: {
             borderRadius: "6px",
@@ -51,19 +53,22 @@ if(user){
         });
         localStorage.setItem(
           "token",
-          JSON.stringify({ token: data?.token, user: data?._id, name: data?.name })
+          JSON.stringify({
+            token: data?.token,
+            user: data?._id,
+            name: data?.name,
+          })
         );
         window.location.replace("/");
       }
     } catch (err: any) {
+      setLoading(false);
       toast.error("Something unexpected happen! Please check your inputs!", {
-        
-          style: {
-            borderRadius: "6px",
-            background: "#333",
-            color: "#fff",
-          },
-        
+        style: {
+          borderRadius: "6px",
+          background: "#333",
+          color: "#fff",
+        },
       });
     }
   };
@@ -134,17 +139,17 @@ if(user){
 
                 <button
                   type="submit"
-                  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                 Create Account
+                  {loading ? "Creating account..." : "Create account"}
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-               Already a register user?{" "}
+                  Already a register user?{" "}
                   <Link
-                   to="/login"
+                    to="/login"
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
-                 Login in
+                    Login in
                   </Link>
                 </p>
               </form>
@@ -155,11 +160,26 @@ if(user){
       <div className="flex flex-col gap-2 mt-14">
         <p>Developed by Mohammed Faizan ahmed</p>
         <div className="flex gap-4 w-full justify-center">
-       <a href="https://www.linkedin.com/in/faizan-ahmed-4ab0a522a/" className="bg-transparent"><img src="/linkedin.svg" className="h-9 w-9" alt="linkedin"/></a>
-       <a href="https://github.com/mdfaizanahmed786" className="bg-transparent"><img src="/github.svg" className="h-9 w-9" alt="github"/></a>
-       <a href="https://www.instagram.com/ahmed_faizan_7860/" className="bg-transparent"><img src="/instagram.svg" className="h-9 w-9" alt="instagram"/></a>
+          <a
+            href="https://www.linkedin.com/in/faizan-ahmed-4ab0a522a/"
+            className="bg-transparent"
+          >
+            <img src="/linkedin.svg" className="h-9 w-9" alt="linkedin" />
+          </a>
+          <a
+            href="https://github.com/mdfaizanahmed786"
+            className="bg-transparent"
+          >
+            <img src="/github.svg" className="h-9 w-9" alt="github" />
+          </a>
+          <a
+            href="https://www.instagram.com/ahmed_faizan_7860/"
+            className="bg-transparent"
+          >
+            <img src="/instagram.svg" className="h-9 w-9" alt="instagram" />
+          </a>
         </div>
-        </div>
+      </div>
       <Toaster position="top-center" reverseOrder={false} />
     </div>
   );

@@ -8,6 +8,7 @@ type Props = {};
 const Login = (props: Props) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("token") as string);
     if (user) {
@@ -27,6 +28,7 @@ const Login = (props: Props) => {
       });
       return;
     }
+    setLoading(true)
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND}/api/v1/auth/login`,
@@ -36,6 +38,7 @@ const Login = (props: Props) => {
         }
       );
       if (data?.success) {
+        setLoading(false)
         toast.success("Login successful!", {
           style: {
             borderRadius: "6px",
@@ -51,6 +54,7 @@ const Login = (props: Props) => {
         window.location.replace("/");
       }
     } catch (err) {
+      setLoading(false)
       toast.error("Please check your credentials!", {
         style: {
           borderRadius: "6px",
@@ -111,9 +115,10 @@ const Login = (props: Props) => {
 
                   <button
                     type="submit"
-                    className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                    className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 disabled:cursor-not-allowed disabled:opacity-50"
+                    disabled={loading}
                   >
-                    Sign in
+                    {loading ? "Signing in...." : "Sign In"}
                   </button>
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     Don’t have an account yet?{" "}
