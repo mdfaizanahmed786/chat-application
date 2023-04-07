@@ -195,7 +195,7 @@ const Channels = ({ debounced }: Props) => {
                 (channelUser) => channelUser._id === user?.user
               ).length !== 0 && (
                 <p className="text-gray-400 text-sm truncate w-52 md:w-48">
-              <span className="font-bold text-sm">{channel?.messages?.at(-1)?.user?.name}</span>  :  {channel?.messages?.at(-1)?.message.includes(import.meta.env.VITE_FIREBASE_URL) ? "Image 🖼️" : channel?.messages?.at(-1)?.message}
+              <span className="font-bold text-sm">{channel?.messages?.at(-1)?.user?.name}</span> {channel?.messages?.at(-1)?.user?.name && ':'}  {channel?.messages?.at(-1)?.message.includes(import.meta.env.VITE_FIREBASE_URL) ? "Image 🖼️" : channel?.messages?.at(-1)?.message}
                 
                 </p>
               )}
