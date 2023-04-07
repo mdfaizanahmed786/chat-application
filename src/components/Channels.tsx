@@ -171,6 +171,7 @@ const Channels = ({ debounced }: Props) => {
   return (
     <div className="py-4  cursor-pointer">
       {data.map((channel: Channel) => (
+
         <div
           key={channel._id}
           className="flex items-center py-2 px-3 mb-2 rounded-md hover:bg-[#3C393F]"
@@ -179,6 +180,7 @@ const Channels = ({ debounced }: Props) => {
             globalContext?.navRef?.current?.classList.remove("min-w-[100%]");
           }}
         >
+        
           <div className="flex items-center">
             <div className="avatar">
               <div className="w-9 rounded-full">
@@ -193,7 +195,7 @@ const Channels = ({ debounced }: Props) => {
                 (channelUser) => channelUser._id === user?.user
               ).length !== 0 && (
                 <p className="text-gray-400 text-sm truncate w-52 md:w-48">
-                  {channel?.messages?.at(-1)?.message.includes(import.meta.env.VITE_FIREBASE_URL) ? "Image 🖼️" : channel?.messages?.at(-1)?.message}
+              <span className="font-bold text-sm">{channel?.messages?.at(-1)?.user?.name}</span>  :  {channel?.messages?.at(-1)?.message.includes(import.meta.env.VITE_FIREBASE_URL) ? "Image 🖼️" : channel?.messages?.at(-1)?.message}
                 
                 </p>
               )}
