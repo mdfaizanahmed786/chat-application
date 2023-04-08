@@ -23,6 +23,7 @@ const Navbar = (props: Props) => {
         `${import.meta.env.VITE_BACKEND}/api/v1/leaveChannel/${channelId}`,
         {
           userId: user?.user,
+          creator: globalContext?.messages?.channel?.createdBy === user?.user,
         },
         {
           headers: {
@@ -32,13 +33,23 @@ const Navbar = (props: Props) => {
       );
 
       if (data?.success) {
-        toast.success("Removed from channel!", {
-          style: {
-            borderRadius: "6px",
-            background: "#333",
-            color: "#fff",
-          },
-        });
+        toast.success(
+          `${
+            globalContext?.messages?.channel?.createdBy === user?.user
+              ? "Deleted Channel"
+              : "Removed from channel"
+          }`,
+          {
+            style: {
+              borderRadius: "6px",
+              background: "#333",
+              color: "#fff",
+            },
+          }
+        );
+        if (globalContext?.messages?.channel?.createdBy === user?.user) {
+          globalContext?.setChannelId?.("");
+        }
       }
 
       return data;
@@ -48,15 +59,14 @@ const Navbar = (props: Props) => {
   };
   const leaveMutate = useMutation({
     mutationFn: handleLeaveChannel,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries(["channel"]);
     },
   });
 
   const openNav = () => {
-  globalContext?.navRef?.current?.classList.add("min-w-[100%]");
-
-  }
+    globalContext?.navRef?.current?.classList.add("min-w-[100%]");
+  };
 
   return (
     <>
@@ -79,9 +89,6 @@ const Navbar = (props: Props) => {
         </div>
         <div className="h-[74px] w-full bg-[#252329]  md:px-10 flex-1   justify-center  sticky top-0 flex flex-col">
           <div className="flex items-center gap-3">
-
-
-
             {globalContext?.messages?.channel?.name && (
               <img
                 src={`https://ui-avatars.com/api/?background=random&size=128&rounded=true&format=png&name=${globalContext?.messages?.channel?.name}`}
@@ -143,7 +150,9 @@ const Navbar = (props: Props) => {
                         d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
                       />
                     </svg>
-                    Leave Channel
+                    {globalContext?.messages?.channel?.createdBy === user?.user
+                      ? "Exit and remove"
+                      : "Leave Channel"}
                   </a>
                 </li>
               </ul>
