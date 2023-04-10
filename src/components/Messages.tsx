@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { GlobalContext } from "../context/globalContext";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 type Props = {};
 
@@ -9,12 +10,38 @@ const Messages = (props: Props) => {
   const messageContext = useContext<GlobalContext | null>(GlobalContext);
   const joinedUsers = messageContext?.messages?.channel?.users;
 
+  
+const fetchMessages=async()=>{
+  const response=await fetch(`${import.meta.env.VITE_BACKEND}/api/v1/messages?channelId=${messageContext?.channelId}&page=1`,{
+    method:"GET",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization: `Bearer ${loggedInUser?.token}`
+    }
+  })
+  const data=await response.json()
+  return data
+}
+
+
+
+
+
+  const {data, isLoading, error}=useQuery({
+    queryKey: ["messages", messageContext?.channelId],
+    queryFn:fetchMessages,
+   
+    enabled:messageContext?.channelId!==""
+  })
+
+ 
+
   return (
     <div className="h-full">
       {joinedUsers?.filter((user) => user._id === loggedInUser?.user).length !==
       0 ? (
         <div>
-          {messageContext?.messages?.channel?.messages?.map(
+          {data?.messages?.slice()?.reverse()?.map(
             (message: ArrayOfmessages, i: number) => (
               <div
                 key={message._id}

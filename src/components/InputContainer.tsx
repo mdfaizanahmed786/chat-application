@@ -65,6 +65,7 @@ const InputContainer = (props: Props) => {
 
     onSuccess: (data) => {
       queryClient.invalidateQueries(["channel"]);
+      queryClient.invalidateQueries(["messages"]);
     },
   });
 
@@ -147,6 +148,7 @@ const InputContainer = (props: Props) => {
     mutationFn: uploadImage,
     onSuccess: () => {
       queryClient.invalidateQueries(["channel"]);
+      queryClient.invalidateQueries(["messages"]);
     },
   });
 
