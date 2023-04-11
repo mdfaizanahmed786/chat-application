@@ -38,7 +38,7 @@ const Messages = (props: Props) => {
   };
 
   const { data, error, fetchNextPage, hasNextPage, status } = useInfiniteQuery({
-    queryKey: ["messages", joinedUser?.length],
+    queryKey: ["messages", joinedUser?.length, globalContext?.channelId],
     queryFn: fetchMessages,
     getNextPageParam: (_lastPage, pages) => {
       if (pages.length < pages[0]?.totalPages) {
