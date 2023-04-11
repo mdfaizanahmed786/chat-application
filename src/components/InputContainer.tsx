@@ -8,10 +8,10 @@ import { Toaster, toast } from "react-hot-toast";
 type Props = {};
 
 const InputContainer = (props: Props) => {
-  const messageContext = useContext<GlobalContext | null>(GlobalContext);
+  const globalContext = useContext<GlobalContext | null>(GlobalContext);
   const queryClient = useQueryClient();
   const loggedInUser = JSON.parse(localStorage.getItem("token") as string);
-  const joinedUser = messageContext?.messages?.channel?.users?.filter(
+  const joinedUser = globalContext?.messages?.channel?.users?.filter(
     (user) => user?._id === loggedInUser?.user
   );
   const imageRef = useRef<HTMLInputElement>(null);
@@ -31,10 +31,7 @@ const InputContainer = (props: Props) => {
 
     const channel = pusher.subscribe("chat");
     channel.bind("trigger-chat", function (data: ChannelState) {
-      messageContext?.setMessages?.({
-        ...messageContext?.messages,
-        channel: data?.channel,
-      });
+     
     });
 
     return () => {
@@ -64,8 +61,10 @@ const InputContainer = (props: Props) => {
       ),
 
     onSuccess: (data) => {
-      queryClient.invalidateQueries(["channel"]);
       queryClient.invalidateQueries(["messages"]);
+      queryClient.invalidateQueries(["channel"]);
+   
+
     },
   });
 
@@ -74,7 +73,7 @@ const InputContainer = (props: Props) => {
 
     messageMutation.mutate({
       message,
-      channel: messageContext?.messages?.channel?._id,
+      channel: globalContext?.messages?.channel?._id,
       name: loggedInUser?.name,
     });
 
@@ -114,7 +113,7 @@ const InputContainer = (props: Props) => {
 
           messageMutation.mutate({
             message: data?.downloadURL,
-            channel: messageContext?.messages?.channel?._id,
+            channel: globalContext?.messages?.channel?._id,
             name: loggedInUser?.name,
           });
           setImage("");
@@ -159,7 +158,7 @@ const InputContainer = (props: Props) => {
         className="flex items-center gap-2 md:gap-6"
       >
         {joinedUser?.length !== 0 &&
-          messageContext?.messages?.channel?.name && (
+          globalContext?.messages?.channel?.name && (
             <div className="cursor-pointer ">
               <label htmlFor="my-modal-3" className="cursor-pointer" onClick={()=>setOpen(true)}>
                 <svg
@@ -198,7 +197,7 @@ const InputContainer = (props: Props) => {
             onChange={(e) => setMessage(e.target.value)}
             disabled={
               joinedUser?.length === 0 ||
-              !messageContext?.messages?.channel?.name
+              !globalContext?.messages?.channel?.name
             }
           />
           <button

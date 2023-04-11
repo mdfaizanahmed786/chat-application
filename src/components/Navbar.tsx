@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { GlobalContext } from "../context/globalContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -13,9 +13,9 @@ const Navbar = (props: Props) => {
   const queryClient = useQueryClient();
 
   const channelMembers = globalContext?.messages?.channel?.users;
-  const isMember = channelMembers?.filter(
+  const isMember =useMemo(()=> channelMembers?.filter(
     (member) => member?._id === user?.user
-  );
+  ),[channelMembers,user?.user])
 
   const handleLeaveChannel = async () => {
     if (channelId) {
@@ -61,7 +61,7 @@ const Navbar = (props: Props) => {
     mutationFn: handleLeaveChannel,
     onSuccess: (data) => {
       queryClient.invalidateQueries(["channel"]);
-      // queryClient.invalidateQueries(["messages"]);
+  
     },
   });
 

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { GlobalContext } from "../context/globalContext";
 import {
   useInfiniteQuery,
@@ -13,12 +13,12 @@ type Props = {};
 const Messages = (props: Props) => {
   const colorArray = ["#3C393F", "#120F13"];
   const loggedInUser = JSON.parse(localStorage.getItem("token") as string);
-  const queryClient = useQueryClient();
+  
   const globalContext = useContext<GlobalContext | null>(GlobalContext);
 
-  const joinedUser = globalContext?.messages?.channel?.users?.filter(
+  const joinedUser =useMemo(()=> globalContext?.messages?.channel?.users?.filter(
     (user) => user?._id === loggedInUser?.user
-  );
+  ),[globalContext?.messages?.channel?.users])
 
   const fetchMessages = async ({ pageParam = 1 }) => {
     const response = await fetch(
@@ -48,7 +48,8 @@ const Messages = (props: Props) => {
         return false;
       }
     },
-    enabled: joinedUser?.length !== 0,
+ 
+    enabled: joinedUser?.length !== 0 && globalContext?.channelId !== "",
   });
 
   if (
@@ -61,25 +62,20 @@ const Messages = (props: Props) => {
     </div>;
   }
 
+  
   return (
     <div className="h-full">
       {joinedUser?.length !== 0 ? (
         globalContext?.messages?.channel?.name && (
           <div
             id="scrollableDiv"
-            style={{
-              height: "100%",
-              overflowY: "scroll",
-
-              display: "flex",
-              flexDirection: "column-reverse",
-              scrollBehavior: "smooth",
-            }}
+            className={`h-full overflow-y-scroll flex ${data?.pages?.[0]?.messages?.length<10 ? "flex-col" : "flex-col-reverse"}  scroll-smooth`}
+          
           >
             <InfiniteScroll
               dataLength={data?.pages?.length || 0}
               next={fetchNextPage}
-              style={{ display: "flex", flexDirection: "column-reverse" }} //To put endMessage and loader to the top.
+              style={{ display: "flex", flexDirection: `column-reverse`}} //To put endMessage and loader to the top.
               inverse={true}
               hasMore={hasNextPage || false}
               loader={
@@ -89,7 +85,7 @@ const Messages = (props: Props) => {
               }
               scrollableTarget="scrollableDiv"
             >
-              {data?.pages?.map((message, i: number) =>
+              {data?.pages?.map((message) =>
                 message?.messages?.map(
                   (message: ArrayOfmessages, i: number) => (
                     <div

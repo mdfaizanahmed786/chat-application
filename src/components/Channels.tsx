@@ -44,10 +44,7 @@ const Channels = ({ debounced }: Props) => {
 
     if (data) {
       localStorage.setItem("channelId", globalContext?.channelId!);
-      globalContext?.setMessages?.({
-        ...globalContext?.messages,
-        channel: data,
-      });
+
     }
     return data;
   };
@@ -85,6 +82,7 @@ const Channels = ({ debounced }: Props) => {
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["channel", debounced],
     queryFn: () => fetchChannels(debounced),
+ 
    
   });
 
