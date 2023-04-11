@@ -17,7 +17,7 @@ const storage = getStorage(firebaseApp);
 const uploadImage = async (req, res) => {
   try {
     const file = req.file;
-    console.log(file.size)
+   
     if(file.size > 1000000){
         return res.status(400).json({success:false,message: "File size is too large"})
     }

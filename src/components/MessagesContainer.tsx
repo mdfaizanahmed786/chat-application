@@ -24,7 +24,7 @@ const MessagesContainer = (props: Props) => {
     }
   }, [])
   return (
-    <div ref={messageEl} className='flex-1 h-full overflow-y-auto  '>
+    <div ref={messageEl} className='flex-1 h-full overflow-y-auto'>
       <Messages/>
     </div>
   )
