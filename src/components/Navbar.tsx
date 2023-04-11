@@ -61,6 +61,7 @@ const Navbar = (props: Props) => {
     mutationFn: handleLeaveChannel,
     onSuccess: (data) => {
       queryClient.invalidateQueries(["channel"]);
+      // queryClient.invalidateQueries(["messages"]);
     },
   });
 

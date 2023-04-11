@@ -21,6 +21,7 @@ const getMessages = async (req, res) => {
       res.json({
         messages,
         totalPages,
+        page,
         totalResults: count,
       });
     } catch (err) {
