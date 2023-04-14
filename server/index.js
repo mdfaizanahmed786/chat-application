@@ -18,7 +18,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 //defining all routes
 app.use("/api/v1", require("./src/v1/routes/channelRoutes"));
 app.use("/api/v1", require("./src/v1/routes/userRoutes"));
-app.use("/api/v1", require("./src/v1/routes/sendMessage"));
+app.use("/api/v1", require("./src/v1/routes/messagesRoutes"));
 app.use("/api/v1", require("./src/v1/routes/uploadMedia"));
 
 // Connection to the database
