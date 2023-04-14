@@ -85,7 +85,7 @@ const InputContainer = (props: Props) => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (e.target.files) {
-      if (e.target.files[0].size > 1000000) {
+      if (e.target.files[0].size > 2000000) {
         toast.error("Image/Video size is too large", {
           style: {
             borderRadius: "6px",

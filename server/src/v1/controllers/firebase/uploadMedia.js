@@ -18,7 +18,7 @@ const uploadMedia = async (req, res) => {
   try {
     const file = req.file;
    
-    if(file.size > 1000000){
+    if(file.size > 2000000){
         return res.status(400).json({success:false,message: "File size is too large"})
     }
     const storageRef = ref(storage, `media/${file.originalname}`+Date.now());
