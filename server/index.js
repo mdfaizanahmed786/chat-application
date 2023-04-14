@@ -22,7 +22,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use('/api/v1',require('./src/v1/routes/channelRoutes'));
 app.use('/api/v1',require('./src/v1/routes/userRoutes'));
 app.use('/api/v1',require('./src/v1/routes/messagesRoutes'));
-app.use('/api/v1', require('./src/v1/routes/uploadImage'));
+app.use('/api/v1', require('./src/v1/routes/uploadMedia'));
 
 
 
