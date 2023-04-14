@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Pusher from "pusher-js";
 import axios from "axios";
 import { GlobalContext } from "../context/globalContext";
@@ -11,9 +11,9 @@ const InputContainer = (props: Props) => {
   const globalContext = useContext<GlobalContext | null>(GlobalContext);
   const queryClient = useQueryClient();
   const loggedInUser = JSON.parse(localStorage.getItem("token") as string);
-  const joinedUser = globalContext?.messages?.channel?.users?.filter(
+  const joinedUser = useMemo(()=>globalContext?.messages?.channel?.users?.filter(
     (user) => user?._id === loggedInUser?.user
-  );
+  ),[globalContext?.messages?.channel?.users,loggedInUser?.user])
   const imageRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<FileList[0] | null>();
   const [loading, setLoading] = useState(false);
