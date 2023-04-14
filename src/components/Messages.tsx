@@ -1,16 +1,8 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useMemo, } from "react";
 import ReactPlayer from "react-player";
 import { GlobalContext } from "../context/globalContext";
 import { useMediaQuery } from "@mantine/hooks";
 
-
-
-import {
-  useInfiniteQuery
-} from "@tanstack/react-query";
-
-import { ClipLoader, FadeLoader } from "react-spinners";
-import Pusher from "pusher-js";
 
 type Props = {};
 
@@ -42,15 +34,8 @@ const Messages = (props: Props) => {
  
 
   
-  if (
-    status === "loading" &&
-    globalContext?.channelId !== "" &&
-    joinedUser?.length !== 0
-  ) {
-    return <div className="flex items-center justify-center h-full">
-      <FadeLoader color="#ffffff"  />
-    </div>;
-  }
+ 
+  
   return (
     <div className="h-full">
       {joinedUser?.filter((user) => user._id === loggedInUser?.user).length !==

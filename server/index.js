@@ -16,18 +16,10 @@ app.use(cors());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 //defining all routes
-<<<<<<< HEAD
 app.use("/api/v1", require("./src/v1/routes/channelRoutes"));
 app.use("/api/v1", require("./src/v1/routes/userRoutes"));
 app.use("/api/v1", require("./src/v1/routes/sendMessage"));
 app.use("/api/v1", require("./src/v1/routes/uploadMedia"));
-=======
-app.use('/api/v1',require('./src/v1/routes/channelRoutes'));
-app.use('/api/v1',require('./src/v1/routes/userRoutes'));
-app.use('/api/v1',require('./src/v1/routes/messagesRoutes'));
-app.use('/api/v1', require('./src/v1/routes/uploadMedia'));
-
->>>>>>> fff63ea72ecd9ef70d34359d7e1cd0c9377eef0d
 
 // Connection to the database
 mongoose
