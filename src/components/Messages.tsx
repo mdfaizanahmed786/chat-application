@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import ReactPlayer from "react-player";
 import { GlobalContext } from "../context/globalContext";
 
@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ClipLoader, FadeLoader } from "react-spinners";
+import Pusher from "pusher-js";
 
 type Props = {};
 
@@ -21,6 +22,11 @@ const Messages = (props: Props) => {
   const joinedUser =useMemo(()=> globalContext?.messages?.channel?.users?.filter(
     (user) => user?._id === loggedInUser?.user
   ),[globalContext?.messages?.channel?.users])
+
+  const [newMesssages, setNewMessages]=useState([])
+  const [updatedMessages, setUpdatedMessages]=useState([])
+
+
 
   const fetchMessages = async ({ pageParam = 1 }) => {
     const response = await fetch(
@@ -39,7 +45,7 @@ const Messages = (props: Props) => {
     return data;
   };
 
-  const { data, error, fetchNextPage, hasNextPage, status } = useInfiniteQuery({
+  const { data:messagesData, error, fetchNextPage, hasNextPage, status } = useInfiniteQuery({
     queryKey: ["messages", joinedUser?.length, globalContext?.channelId],
     queryFn: fetchMessages,
     getNextPageParam: (_lastPage, pages) => {
@@ -54,6 +60,37 @@ const Messages = (props: Props) => {
     enabled: joinedUser?.length !== 0 && globalContext?.channelId !== "",
   });
 
+
+  useEffect(() => {
+    const pusher = new Pusher(import.meta.env.VITE_PUSHER_API_KEY, {
+      cluster: "mt1",
+    });
+
+    const channel = pusher.subscribe("chat");
+    channel.bind("trigger-chat", function (data: ChannelState) {
+      //  setNewMessages([...newMessages, messagesData])
+    
+       
+      });
+  
+    return () => {
+      pusher.unsubscribe("chat");
+    };
+  }, []);
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+  
   if (
     status === "loading" &&
     globalContext?.channelId !== "" &&
@@ -63,19 +100,19 @@ const Messages = (props: Props) => {
       <FadeLoader color="#ffffff"  />
     </div>;
   }
-
-  
   return (
     <div className="h-full">
       {joinedUser?.length !== 0 ? (
         globalContext?.messages?.channel?.name && (
           <div
             id="scrollableDiv"
-            className={`h-full overflow-y-scroll flex ${data?.pages?.[0]?.messages?.length<10 ? "flex-col" : "flex-col-reverse"}  scroll-smooth`}
+            className={`h-full overflow-y-scroll flex ${messagesData?.pages?.[0]?.messages?.length<10 ? "flex-col" : "flex-col-reverse"}  scroll-smooth`}
           
           >
+     
+
             <InfiniteScroll
-              dataLength={data?.pages?.length || 0}
+              dataLength={messagesData?.pages?.length || 0}
               next={fetchNextPage}
               style={{ display: "flex", flexDirection: `column-reverse`}} //To put endMessage and loader to the top.
               inverse={true}
@@ -87,7 +124,7 @@ const Messages = (props: Props) => {
               }
               scrollableTarget="scrollableDiv"
             >
-              {data?.pages?.map((message) =>
+               {messagesData?.pages?.map((message) => 
                 message?.messages?.map(
                   (message: ArrayOfmessages, i: number) => (
                     <div
@@ -142,7 +179,7 @@ const Messages = (props: Props) => {
                     </div>
                   )
                 )
-              )}
+              )} 
             </InfiniteScroll>
           </div>
         )

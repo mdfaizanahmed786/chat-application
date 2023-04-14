@@ -29,18 +29,8 @@ const InputContainer = (props: Props) => {
 
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    const pusher = new Pusher(import.meta.env.VITE_PUSHER_API_KEY, {
-      cluster: "mt1",
-    });
-
-    const channel = pusher.subscribe("chat");
-    channel.bind("trigger-chat", function (data: ChannelState) {});
-
-    return () => {
-      pusher.unsubscribe("chat");
-    };
-  }, []);
+ 
+ 
 
   const messageMutation = useMutation({
     mutationFn: (data: {

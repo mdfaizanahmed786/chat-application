@@ -1,4 +1,14 @@
+const Pusher = require("pusher");
 const Message = require("../../models/Message");
+
+
+const pusher = new Pusher({
+  appId: "1576258",
+  key: process.env.PUSHER_API_KEY,
+  secret: process.env.PUSHER_SECRET,
+  cluster: "mt1",
+  useTLS: true,
+});
 
 const getMessages = async (req, res) => {
     const perPage = 10;
@@ -17,6 +27,9 @@ const getMessages = async (req, res) => {
         .limit(perPage)
   
       const totalPages = Math.ceil(count / perPage);
+      pusher.trigger("chat", "trigger-chat", {
+        messages
+      });
   
       res.json({
         messages,
