@@ -131,6 +131,8 @@ const InputContainer = (props: Props) => {
             name: loggedInUser?.name,
           });
           setImage("");
+          setVideoThumbnail("");
+          setFiles(null);
           setLoading(false);
           setOpen(false);
           toast.success(`Media uploaded successfully`, {
@@ -148,7 +150,11 @@ const InputContainer = (props: Props) => {
               color: "#fff",
             },
           });
+          setImage("");
+          setVideoThumbnail("");
+          setFiles(null);
           setLoading(false);
+          setOpen(false);
         }
       } catch (err) {
         toast.error("Something unexpected happened, please try again", {
