@@ -14,28 +14,32 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 
-const uploadImage = async (req, res) => {
+const uploadMedia = async (req, res) => {
   try {
     const file = req.file;
-    console.log(file.size)
-    if(file.size > 1000000){
-        return res.status(400).json({success:false,message: "File size is too large"})
+    console.log(file.size);
+    if (file.size > 3000000) {
+      return res
+        .status(400)
+        .json({ success: false, message: "File size is too large" });
     }
-    const storageRef = ref(storage, `images/${file.originalname}`+Date.now());
+    const storageRef = ref(storage, `images/${file.originalname}` + Date.now());
     const metaData = {
       contentType: file.mimetype,
     };
     const snapshot = await uploadBytes(storageRef, file.buffer, metaData);
     const downloadURL = await getDownloadURL(snapshot.ref);
-    if(!downloadURL){
-        return res.status(400).json({success:false,message: "File upload failed"})
+    if (!downloadURL) {
+      return res
+        .status(400)
+        .json({ success: false, message: "File upload failed" });
     }
     res
       .status(200)
       .json({ success: true, downloadURL, name: file.originalname });
   } catch (err) {
-    res.status(500).json({ message: err.message, success:false });
+    res.status(500).json({ message: err.message, success: false });
   }
 };
 
-module.exports = uploadImage;
+module.exports = uploadMedia;

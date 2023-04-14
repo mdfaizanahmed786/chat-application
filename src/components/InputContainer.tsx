@@ -8,10 +8,10 @@ import { Toaster, toast } from "react-hot-toast";
 type Props = {};
 
 const InputContainer = (props: Props) => {
-  const messageContext = useContext<GlobalContext | null>(GlobalContext);
+  const globalContext = useContext<GlobalContext | null>(GlobalContext);
   const queryClient = useQueryClient();
   const loggedInUser = JSON.parse(localStorage.getItem("token") as string);
-  const joinedUser = messageContext?.messages?.channel?.users?.filter(
+  const joinedUser = globalContext?.messages?.channel?.users?.filter(
     (user) => user?._id === loggedInUser?.user
   );
   const imageRef = useRef<HTMLInputElement>(null);
@@ -19,6 +19,7 @@ const InputContainer = (props: Props) => {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
   const [open, setOpen] = useState(false);
+  const [videoThumbnail, setVideoThumbnail] = useState("");
 
   const [message, setMessage] = useState("");
 
@@ -31,8 +32,8 @@ const InputContainer = (props: Props) => {
 
     const channel = pusher.subscribe("chat");
     channel.bind("trigger-chat", function (data: ChannelState) {
-      messageContext?.setMessages?.({
-        ...messageContext?.messages,
+      globalContext?.setMessages?.({
+        ...globalContext?.messages,
         channel: data?.channel,
       });
     });
@@ -73,34 +74,48 @@ const InputContainer = (props: Props) => {
 
     messageMutation.mutate({
       message,
-      channel: messageContext?.messages?.channel?._id,
+      channel: globalContext?.messages?.channel?._id,
       name: loggedInUser?.name,
     });
 
     setMessage("");
   };
 
-  const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageAndVideo = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (e.target.files) {
-      if (e.target.files[0].size > 1000000) {
-        toast.error("File size is too large");
+      if (e.target.files[0].size > 3000000) {
+        toast.error("Image/Video size is too large", {
+          style: {
+            borderRadius: "6px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
 
         return;
       }
       setFiles(e.target.files[0]);
 
-      setImage(URL.createObjectURL(e.target.files[0]));
+      if (e.target.files[0].type.includes("video")) {
+        setVideoThumbnail(URL.createObjectURL(e.target.files[0]));
+        setImage("");
+      } else {
+        setImage(URL.createObjectURL(e.target.files[0]));
+        setVideoThumbnail("");
+      }
     }
   };
 
-  const uploadImage = async () => {
+  const upload = async () => {
     if (files?.name) {
       let formData = new FormData();
       formData.append("file", files);
       try {
         setLoading(true);
         const { data } = await axios.post(
-          `${import.meta.env.VITE_BACKEND}/api/v1/uploadImage`,
+          `${import.meta.env.VITE_BACKEND}/api/v1/uploadMedia`,
           formData,
           {
             headers: {
@@ -110,41 +125,51 @@ const InputContainer = (props: Props) => {
           }
         );
         if (data?.success) {
-
           messageMutation.mutate({
             message: data?.downloadURL,
-            channel: messageContext?.messages?.channel?._id,
+            channel: globalContext?.messages?.channel?._id,
             name: loggedInUser?.name,
           });
           setImage("");
+          setVideoThumbnail("");
+          setFiles(null);
           setLoading(false);
-          setOpen(false)
-          toast.success("Image uploaded successfully", {
-            style: {
-              borderRadius: "6px",
-              background: "#333",
-              color: "#fff",
-            },
-          })
-          
-        } else {
-          toast.error("Something unexpected happened, please try again",  {
+          setOpen(false);
+          toast.success(`Media uploaded successfully`, {
             style: {
               borderRadius: "6px",
               background: "#333",
               color: "#fff",
             },
           });
+        } else {
+          toast.error("Something unexpected happened, please try again", {
+            style: {
+              borderRadius: "6px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+          setImage("");
+          setVideoThumbnail("");
+          setFiles(null);
           setLoading(false);
+          setOpen(false);
         }
       } catch (err) {
-        toast.error("Something unexpected happened, please try again");
+        toast.error("Something unexpected happened, please try again", {
+          style: {
+            borderRadius: "6px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
       }
     }
   };
 
-  const imageMutation = useMutation({
-    mutationFn: uploadImage,
+  const mediaMutation = useMutation({
+    mutationFn: upload,
     onSuccess: () => {
       queryClient.invalidateQueries(["channel"]);
     },
@@ -157,7 +182,7 @@ const InputContainer = (props: Props) => {
         className="flex items-center gap-2 md:gap-6"
       >
         {joinedUser?.length !== 0 &&
-          messageContext?.messages?.channel?.name && (
+          globalContext?.messages?.channel?.name && (
             <div className="cursor-pointer ">
               <label htmlFor="my-modal-3" className="cursor-pointer" onClick={()=>setOpen(true)}>
                 <svg
@@ -181,8 +206,8 @@ const InputContainer = (props: Props) => {
           type="file"
           hidden
           ref={imageRef}
-          accept="image/jpg, image/png"
-          onChange={handleImage}
+          accept="image/jpg, image/png, video/mp4"
+          onChange={handleImageAndVideo}
           name="file"
         />
 
@@ -196,7 +221,7 @@ const InputContainer = (props: Props) => {
             onChange={(e) => setMessage(e.target.value)}
             disabled={
               joinedUser?.length === 0 ||
-              !messageContext?.messages?.channel?.name
+              !globalContext?.messages?.channel?.name
             }
           />
           <button
@@ -233,15 +258,15 @@ const InputContainer = (props: Props) => {
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕
-          </label>
+            </label>
           <h3 className=" font-bold mb-6 text-sm md:text-lg text-center">
-            Upload Image (less than 1MB)
+            Upload Image/Video (Only jpg, png, mp4)
           </h3>
           <div
             className="ring-1 ring-gray-700 rounded-md h-44 flex justify-center items-center w-full"
             onClick={() => imageRef?.current?.click()}
           >
-            Click here to upload image
+            Click here to upload image/video
           </div>
           <div className="space-y-4">
             <p className="text-lg font-bold text-left mt-5">Preview</p>
@@ -251,12 +276,24 @@ const InputContainer = (props: Props) => {
                 className="md:h-36 md:w-36 h-24 w-24 rounded-md"
               />
             )}
+            {videoThumbnail && (
+              <div>
+                <video
+                  className="md:h-36 md:w-36 h-36 w-36 rounded-md"
+                  controls
+                >
+                  <source src={videoThumbnail} type={files?.type} />
+                  Your browser does not support HTML5 video.
+                </video>
+              </div>
+            )}
+
             <button
               className="bg-[#2D9CDB] active:bg-blue-500 text-white py-2 rounded-md w-full disabled:cursor-not-allowed disabled:bg-gray-400"
-              disabled={!image|| loading}
-              onClick={()=>imageMutation.mutate()}
+              disabled={(!files) || loading}
+              onClick={() => mediaMutation.mutate()}
             >
-            {loading ? "Uploading..." : "Upload"}
+              {loading ? "Uploading..." : "Upload"}
             </button>
           </div>
         </div>
