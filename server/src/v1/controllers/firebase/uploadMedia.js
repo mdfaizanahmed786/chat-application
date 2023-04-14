@@ -14,7 +14,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 
-const uploadImage = async (req, res) => {
+const uploadMedia = async (req, res) => {
   try {
     const file = req.file;
    
@@ -32,10 +32,9 @@ const uploadImage = async (req, res) => {
     }
     res
       .status(200)
-      .json({ success: true, downloadURL, name: file.originalname });
-  } catch (err) {
+u  } catch (err) {
     res.status(500).json({ message: err.message, success:false });
   }
 };
 
-module.exports = uploadImage;
+module.exports = uploadMedia;
