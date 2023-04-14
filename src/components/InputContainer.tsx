@@ -86,7 +86,13 @@ const InputContainer = (props: Props) => {
   ) => {
     if (e.target.files) {
       if (e.target.files[0].size > 1000000) {
-        toast.error("Image/Video size is too large");
+        toast.error("Image/Video size is too large", {
+          style: {
+            borderRadius: "6px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
 
         return;
       }
@@ -145,7 +151,13 @@ const InputContainer = (props: Props) => {
           setLoading(false);
         }
       } catch (err) {
-        toast.error("Something unexpected happened, please try again");
+        toast.error("Something unexpected happened, please try again", {
+          style: {
+            borderRadius: "6px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
       }
     }
   };
