@@ -7,7 +7,7 @@ const uploadMedia = require('../controllers/firebase/uploadMedia');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage }).single('file');
 
-router.post('/uploadImage',authenticateUser, upload ,uploadMedia);
+router.post('/uploadMedia',authenticateUser, upload ,uploadMedia);
 
 
 module.exports=router;

@@ -109,7 +109,7 @@ const InputContainer = (props: Props) => {
       try {
         setLoading(true);
         const { data } = await axios.post(
-          `${import.meta.env.VITE_BACKEND}/api/v1/uploadImage`,
+          `${import.meta.env.VITE_BACKEND}/api/v1/uploadMedia`,
           formData,
           {
             headers: {
@@ -127,7 +127,7 @@ const InputContainer = (props: Props) => {
           setImage("");
           setLoading(false);
           setOpen(false);
-          toast.success("Image uploaded successfully", {
+          toast.success(`Media uploaded successfully`, {
             style: {
               borderRadius: "6px",
               background: "#333",
