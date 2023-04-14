@@ -5,13 +5,6 @@ const Channel = require("../../models/Channel");
 const User = require("../../models/User");
 
 
-const pusher = new Pusher({
-  appId: "1576258",
-  key: process.env.PUSHER_API_KEY,
-  secret: process.env.PUSHER_SECRET,
-  cluster: "mt1",
-  useTLS: true,
-});
 
 const sendMessage = async (req, res) => {
   if (!req.body.message || !req.body.channelId) {
@@ -47,9 +40,7 @@ const sendMessage = async (req, res) => {
     const allMessages = await Channel.find({ _id: req.body.channelId })
 
     
-    pusher.trigger("chat", "trigger-chat", {
-      channel:allMessages[0],
-    });
+ 
    
 
     return res.status(201).json({ success: true });

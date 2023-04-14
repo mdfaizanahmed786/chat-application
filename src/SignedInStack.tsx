@@ -14,13 +14,15 @@ const SignedInStack = (props: Props) => {
       window.location.replace("/login");
     }
   }, [location.pathname])
-   const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
+   const queryClient = new QueryClient(
+    {
+      defaultOptions: {
+        queries: {
+          refetchOnWindowFocus: false
+        },
       },
-    },
-   });
+    }
+   );
   return (
     <>
         <QueryClientProvider client={queryClient}>

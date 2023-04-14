@@ -44,10 +44,7 @@ const Channels = ({ debounced }: Props) => {
 
     if (data) {
       localStorage.setItem("channelId", globalContext?.channelId!);
-      globalContext?.setMessages?.({
-        ...globalContext?.messages,
-        channel: data,
-      });
+
     }
     return data;
   };
@@ -85,6 +82,7 @@ const Channels = ({ debounced }: Props) => {
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["channel", debounced],
     queryFn: () => fetchChannels(debounced),
+ 
    
   });
 
@@ -195,7 +193,18 @@ const Channels = ({ debounced }: Props) => {
                 (channelUser) => channelUser._id === user?.user
               ).length !== 0 && (
                 <p className="text-gray-400 text-sm truncate w-52 md:w-48">
-              <span className="font-bold text-sm">{channel?.messages?.at(-1)?.user?.name}</span> {channel?.messages?.at(-1)?.user?.name && ':'}  {channel?.messages?.at(-1)?.message.includes(import.meta.env.VITE_FIREBASE_URL) ? "Image 🖼️" : channel?.messages?.at(-1)?.message}
+              <span className="font-bold text-sm">{channel?.messages?.at(-1)?.user?.name}</span> {channel?.messages?.at(-1)?.user?.name && ':'}  {channel?.messages?.at(-1)?.message.includes(import.meta.env.VITE_FIREBASE_URL) ?
+               !channel?.messages?.at(-1)?.message.includes('mp4') ?
+
+
+
+              "Image 🖼️" 
+              
+              :
+              "Video 🎥"
+              
+              
+              : channel?.messages?.at(-1)?.message}
                 
                 </p>
               )}
@@ -321,3 +330,27 @@ const Channels = ({ debounced }: Props) => {
 };
 
 export default Channels;
+
+
+
+// {message.message.includes(
+//   import.meta.env.VITE_FIREBASE_URL
+// )  ? (
+//   !message.message.includes('mp4') ?
+//   <img
+//     src={message.message}
+//     className="w-60 rounded-md shadow-md"
+//   />
+//   :
+//   <ReactPlayer
+//   url={message.message}
+//   width="80%"
+//   height="80%"
+//   controls
+// />
+
+// ) : (
+//   <p className="text-white text-lg px-6">
+//     {message.message}
+//   </p>
+// )}

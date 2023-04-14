@@ -159,7 +159,7 @@ const Signup = (props: Props) => {
         </div>
       </div>
       <div className="flex flex-col gap-2 mt-14">
-        <p>Developed by Mohammed Faizan ahmed</p>
+        <p>Developed by Mohammed Faizan Ahmed</p>
         <div className="flex gap-4 w-full justify-center">
           <a
             href="https://www.linkedin.com/in/faizan-ahmed-4ab0a522a/"

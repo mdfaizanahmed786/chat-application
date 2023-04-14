@@ -1,24 +1,62 @@
-import { useContext } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
+import ReactPlayer from "react-player";
 import { GlobalContext } from "../context/globalContext";
 import { useMediaQuery } from "@mantine/hooks";
-import ReactPlayer from 'react-player'
+
+
+
+import {
+  useInfiniteQuery
+} from "@tanstack/react-query";
+
+import { ClipLoader, FadeLoader } from "react-spinners";
+import Pusher from "pusher-js";
 
 type Props = {};
 
 const Messages = (props: Props) => {
   const colorArray = ["#3C393F", "#120F13"];
   const matches = useMediaQuery('(max-width: 768px)');
-
   const loggedInUser = JSON.parse(localStorage.getItem("token") as string);
-  const messageContext = useContext<GlobalContext | null>(GlobalContext);
-  const joinedUsers = messageContext?.messages?.channel?.users;
+  
+  const globalContext = useContext<GlobalContext | null>(GlobalContext);
 
+  const joinedUser =useMemo(()=> globalContext?.messages?.channel?.users?.filter(
+    (user) => user?._id === loggedInUser?.user
+  ),[globalContext?.messages?.channel?.users])
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+  
+  if (
+    status === "loading" &&
+    globalContext?.channelId !== "" &&
+    joinedUser?.length !== 0
+  ) {
+    return <div className="flex items-center justify-center h-full">
+      <FadeLoader color="#ffffff"  />
+    </div>;
+  }
   return (
     <div className="h-full">
-      {joinedUsers?.filter((user) => user._id === loggedInUser?.user).length !==
+      {joinedUser?.filter((user) => user._id === loggedInUser?.user).length !==
       0 ? (
         <div>
-          {messageContext?.messages?.channel?.messages?.map(
+          {globalContext?.messages?.channel?.messages?.map(
             (message: ArrayOfmessages, i: number) => (
               <div
               key={message._id}
@@ -86,7 +124,7 @@ const Messages = (props: Props) => {
         </div>
       )}
 
-      {!messageContext?.messages?.channel?.name && (
+      {!globalContext?.messages?.channel?.name && (
         <div className="flex flex-col items-center justify-center h-full gap-6">
           <img src="/nochat.svg" className="w-52" />
           <p className="font-semibold text-lg">Select a channel to begin!</p>
