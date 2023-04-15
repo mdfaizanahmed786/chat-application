@@ -1,9 +1,9 @@
-import { useContext, useMemo, useState } from "react";
-import ReactPlayer from "react-player";
-import { GlobalContext } from "../context/globalContext";
 import { useMediaQuery } from "@mantine/hooks";
+import { useContext, useMemo, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { PulseLoader } from "react-spinners";
+import ReactPlayer from "react-player";
+import { ClipLoader } from "react-spinners";
+import { GlobalContext } from "../context/globalContext";
 
 type Props = {};
 
@@ -51,15 +51,15 @@ const Messages = (props: Props) => {
               next={() => {
                 setTimeout(() => {
                   setPage((prev) => prev + 1);
-                }, 700);
+                }, 1011);
               }}
               inverse={true}
               style={{ display: "flex", flexDirection: "column-reverse" }}
               hasMore={page < totalPage}
               loader={
-                <div className="justify-center flex w-full m-7">
-                  <PulseLoader color="#0288d1" size={46} />
-                </div>
+                <div className="flex justify-center m-7">
+                  <ClipLoader color="#0288d1" size={45} />
+                  </div>
               }
               scrollableTarget="scrollableDiv"
             >
