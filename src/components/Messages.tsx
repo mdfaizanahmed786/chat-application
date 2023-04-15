@@ -51,7 +51,7 @@ const Messages = (props: Props) => {
               next={() => {
                 setTimeout(() => {
                   setPage((prev) => prev + 1);
-                }, 1011);
+                }, 1600);
               }}
               inverse={true}
               style={{ display: "flex", flexDirection: "column-reverse" }}
