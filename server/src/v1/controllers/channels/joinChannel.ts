@@ -1,7 +1,36 @@
-const Channel = require("../../models/Channel");
-const User = require("../../models/User");
+import Channel from "../../models/Channel.js";
+import User from "../../models/User.js";
+import { Request, Response } from "express";
+import mongoose from "mongoose";
 
-const joinChannel = async (req, res) => {
+type Messages={
+  _id:mongoose.Schema.Types.ObjectId | string;
+  message:string;
+  user:{
+    userId:mongoose.Schema.Types.ObjectId | string;
+    name:string;
+
+  }
+}
+
+type Users={
+  _id:mongoose.Schema.Types.ObjectId | string,
+  name:string,
+  email:string
+}
+type Channels={
+  _id:mongoose.Schema.Types.ObjectId | string,
+  name:string,
+  email:string
+  description:string;
+  users:User[];
+  createdBy:mongoose.Schema.Types.ObjectId | string;
+  messages:Messages[];
+
+}
+
+
+const joinChannel = async (req:Request | any, res:Response) => {
   if (req.params.channelId) {
     // finding channel by id
     const channel = await Channel.findById(req.params.channelId);
@@ -17,7 +46,7 @@ const joinChannel = async (req, res) => {
 
       if (user) {
         // if user exists, then check if user is already in channel
-        const checkUser = channel.users.find((u) => u._id == req.user._id);
+        const checkUser = channel.users.find((u:Users) => u._id == req.user._id);
         if (!checkUser) {
           // if user is not in channel, then add user to channel
           channel.users.push(userObj);
@@ -56,4 +85,4 @@ const joinChannel = async (req, res) => {
   }
 };
 
-module.exports = joinChannel;
+export default joinChannel;

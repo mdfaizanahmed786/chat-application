@@ -1,8 +1,14 @@
-const User = require("../../models/User");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import User from "../../models/User.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { Request, Response } from "express";
 
-const createUser = async (req, res) => {
+interface JWTUSER{
+  email:string,
+  _id:string
+}
+
+const createUser = async (req:Request, res:Response) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ message: "Please enter all fields" });
@@ -23,15 +29,15 @@ const createUser = async (req, res) => {
 
     const token = jwt.sign(
       { email: user.email, _id: user._id },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET as string,
       
     );
 
     await user.save();
     res.status(201).json({ token,  _id: user._id, name:user.name,  success:true });
-  } catch (err) {
+  } catch (err:any) {
     res.status(500).json({ message: err.message });
   }
 };
 
-module.exports = createUser;
+export default createUser;

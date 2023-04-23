@@ -1,6 +1,7 @@
-const User = require("../../models/User");
+import User from "../../models/User.js";
+import { Request, Response } from "express";
 
-const getSingleUser = async (req, res) => {
+const getSingleUser = async (req:Request, res:Response) => {
   if (!req.params.userId) {
     return res.status(400).json({ message: "User Id is required" });
   }
@@ -12,11 +13,11 @@ const getSingleUser = async (req, res) => {
 
     }
     let userObj= user.toObject();
-    delete userObj["password"]
+    delete userObj?.password
     return res.status(200).json(userObj);
-  } catch (err) {
+  } catch (err:any) {
     return res.status(500).json({ message: err.message });
   }
 };
 
-module.exports = getSingleUser;
+export default getSingleUser;
