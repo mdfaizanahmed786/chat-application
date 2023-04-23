@@ -1,6 +1,39 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+type Messages={
+  _id:mongoose.Schema.Types.ObjectId;
+  message:string;
 
-const UserSchema = new mongoose.Schema(
+  user:{
+    userId:mongoose.Schema.Types.ObjectId;
+    name:string;
+
+  }
+}
+type Channel={
+  _id?:mongoose.Schema.Types.ObjectId;
+  name?:string;
+  description:string;
+  users?:User[];
+  createdBy:mongoose.Schema.Types.ObjectId;
+  messages:Messages[];
+
+
+}
+type User={
+  _id:mongoose.Schema.Types.ObjectId | string,
+  name:string,
+  email:string
+  description:string;
+  password?:string;
+  users?:User[];
+  createdBy:mongoose.Schema.Types.ObjectId;
+  messages:Messages[];
+  channels:Channel[];
+
+
+}
+
+const UserSchema = new mongoose.Schema<User>(
   {
     name: {
       type: String,
@@ -50,4 +83,4 @@ const UserSchema = new mongoose.Schema(
 );
 
 const User = mongoose.model("User", UserSchema);
-module.exports = User;
+export default User;

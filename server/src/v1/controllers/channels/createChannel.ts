@@ -1,7 +1,8 @@
-const Channel = require("../../models/Channel");
-const User = require("../../models/User");
+import Channel from "../../models/Channel.js";
+import User from "../../models/User.js";
+import {Request, Response, Errback} from 'express';
 
-const createChannel = async (req, res) => {
+const createChannel = async (req:Request | any, res:Response) => {
   if (!req.body.name || !req.body.description)
     return res.status(400).json({
       message: "Please provide a name and description for the channel",
@@ -33,18 +34,20 @@ const createChannel = async (req, res) => {
     });
     await channel.save();
 
-    user.channels.push({
+    user?.channels?.push({
       _id: savedChannel._id,
       name: savedChannel.name,
-      users: savedChannel.users,
+      //     @ts-ignore
+      users: savedChannel?.users, 
       createdBy: savedChannel.createdBy,
     });
-    await user.save();
+    await user?.save();
 
     res.status(201).json({ success: true, channel: savedChannel });
-  } catch (err) {
+  } catch (err:any) {
     res.status(500).json({ message: err.message });
   }
 };
 
-module.exports = createChannel;
+
+export default createChannel;

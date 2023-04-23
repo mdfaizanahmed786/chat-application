@@ -1,6 +1,11 @@
-const Channel = require("../../models/Channel");
+import Channel from '../../models/Channel.js';
+import {Request, Response} from 'express';
+interface query {
+  cname?: string;
+}
 
-const getChannels = async (req, res) => {
+const getChannels = async (req:Request | any, res:Response) => {
+
   const { cname } = req.query;
   if (!cname) {
     try {
@@ -10,7 +15,7 @@ const getChannels = async (req, res) => {
       return res.status(500).json({ message: err });
     }
   } else {
-    const channelName = req.query.cname.toLowerCase();
+    const channelName = req.query.cname?.toLowerCase();
 
     try {
     //  finOne gives only that object
@@ -22,9 +27,9 @@ const getChannels = async (req, res) => {
      
 
       return res.status(200).json(channel);
-    } catch (err) {
+    } catch (err:any) {
       return res.status(500).json({ message: err.message });
     }
   }
 };
-module.exports = getChannels;
+export default getChannels;
