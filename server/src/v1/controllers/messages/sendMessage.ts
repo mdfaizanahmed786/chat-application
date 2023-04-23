@@ -1,6 +1,5 @@
 import Pusher from "pusher";
 import Message from "../../models/Message.js";
-import mongoose from "mongoose";
 import Channel from "../../models/Channel.js";
 import User from "../../models/User.js";
 import { Request, Response } from "express";
