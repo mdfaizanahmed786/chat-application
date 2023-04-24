@@ -18,10 +18,16 @@ const app = express();
 import mongoose from "mongoose";
 
 // defining all middleware
+app.use(cors(
+  {
+    origin:'https://chat-application-lovat.vercel.app/'
+  }
+
+));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan('tiny'));
-app.use(cors());
+
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 //defining all routes
 app.use("/api/v1",channelRoutes );
