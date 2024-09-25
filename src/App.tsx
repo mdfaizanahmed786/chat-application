@@ -19,6 +19,7 @@ function App(location: Props) {
 
   return (
     <>
+    {/* Loading bar */}
       <LoadingBar
         color="#fff"
         progress={progress}
